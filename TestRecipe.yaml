@@ -1,0 +1,36 @@
+project:
+  name: dm-dataquery
+testSessions:
+- name: "E2E-tests-DEV"
+  parallel: false
+  containers:
+  - image: alloy-datamanagement-e2e-tests
+    deployment:
+      cluster: AT4D_C1
+      namespace: DEVELOPMENT
+      testTag: dm-dataquery
+      testReport:
+        title: "Dataquery E2E Test Results"
+        testType: E2E
+- name: "E2E-tests-QA"
+  parallel: false
+  containers:
+  - image: alloy-datamanagement-e2e-tests
+    deployment:
+      cluster: AT4D_C1
+      namespace: QA
+      testTag: dm-dataquery
+      testReport:
+        title: "Dataquery E2E Test Results"
+        testType: E2E
+- name: "E2E-tests-STAGING"
+  parallel: false
+  containers:
+  - image: alloy-datamanagement-e2e-tests
+    deployment:
+      cluster: AT4U_C1
+      namespace: STAGING
+      testTag: dm-dataquery
+      testReport:
+        title: "Dataquery E2E Test Results"
+        testType: E2E

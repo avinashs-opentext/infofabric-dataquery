@@ -1,0 +1,10 @@
+{
+   Person_by_id(id: 0)
+   {
+       FirstName
+       LastName
+       Email
+       DOB
+       CreatedTime
+   }
+}

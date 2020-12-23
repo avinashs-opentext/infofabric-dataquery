@@ -1,0 +1,300 @@
+buildscript {
+    repositories {
+        maven { url "https://artifactory.otxlab.net/artifactory/liaison-g2-releases" }
+        maven { url 'https://artifactory.otxlab.net/artifactory/repo1.maven.central/' }
+    }
+    dependencies {
+        classpath "com.liaison:gradle-xunit-results-consolidator:1.+"
+        classpath 'org.owasp:dependency-check-gradle:3.3.1'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:5.2.0'
+        classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.+'
+        classpath 'org.hibernate.build.gradle:gradle-maven-publish-auth:2.+'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'jacoco'
+    id "com.github.ManifestClasspath" version "0.1.0-RELEASE"
+
+}
+
+apply plugin: 'com.liaison.gradle-xunit-results-consolidator'
+
+
+group 'com.opentext.infofabric'
+
+
+ext {
+    prometheusVersion = '0.5.0'
+    akkaVersion = '2.4.0'
+    apacheCommonsIoVersion = '2.4'
+    apacheCommonsLangVersion = '2.6'
+    apacheZookeeperVersion = '3.4.11'
+    archaiusCoreVersion = '0.5.4'
+    codecVersion = '1.11'
+    commonsCvsVersion = '1.5'
+    curatorVersion = '4.0.1'
+    dropwizardVersion = '1.2.2'
+    functionalJavaVersion = '3.1'
+    gsonVersion = '2.8.1'
+    graphqlVersion = '9.2'
+    guiceVersion = '4.2.0'
+    hikariCPVersion = '2.7.4'
+    nettyVersion = '4.1.25.Final'
+    log4jVersion = '2.3'
+    pgVersion = '42.2.4'
+    pgEmbeddedVersion = '0.12.1'
+    jacksonVersion = '2.9.5'
+    logstashEncoderVersion = '4.9'
+    solutionDesignerMetaVersion = '0.2.2'
+    sqlBuilderVersion = '2.1.7'
+    registrarVersion = '0.7.45'
+    appStateVersion = '0.1.4'
+    alloyAuthSSOVersion = '2.1.8'
+    datamodelClientVersion = '0.0.2'
+    IFABRIC_COMMON_VERSION = '0.1.6'
+    registrar_version = '0.1.4'
+    slf4jVersion = '1.7.21'
+    maprVersion = '6.1.0-mapr'
+    hbaseVersion = '1.1.8-mapr-1703-m7-5.2.1'
+    hbaseTestVersion = '1.1.8'
+    swaggerVersion = '1.5.17'
+    testngVersion = '6.14.3'
+    mockitoVersion = '1.10.19'
+    kafkaMapRStreamsVersion = '1.1.1-mapr-streams-6.1.0'
+    xercesImpl = '2.12.0'
+    datastreamVersion = '2.3.95'
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+allprojects {
+    repositories {
+        maven { url 'https://artifactory.otxlab.net/artifactory/repo1.maven.central/' }
+        maven { url 'https://artifactory.otxlab.net/artifactory/liaison-dm-releases/' }
+        maven { url 'https://artifactory.otxlab.net/artifactory/liaison-g2-releases' }
+        maven { url 'https://artifactory.otxlab.net/artifactory/liaison-dm-thirdparty' }
+        maven { url 'https://artifactory.otxlab.net/artifactory/liaison-g2-third-party' }
+        maven { url 'https://artifactory.otxlab.net/artifactory/clojars/' }
+    }
+//    version gitVersion()
+}
+
+configurations.all {
+    resolutionStrategy {
+        force "io.netty:netty-all:$nettyVersion",
+                "com.fasterxml.jackson.core:jackson-core:$jacksonVersion",
+                "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
+                "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion",
+                "com.fasterxml.jackson.jaxrs:jackson-jaxrs-base:$jacksonVersion",
+                "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:$jacksonVersion",
+                "io.dropwizard:dropwizard-core:$dropwizardVersion",
+                "org.apache.zookeeper:zookeeper:$apacheZookeeperVersion"
+    }
+    resolutionStrategy.cacheChangingModulesFor 0, 'hours'
+    all*.exclude group: 'org.zefer'
+    all*.exclude group: 'com.liaison', module: 'javaxml'
+    all*.exclude group: 'com.oracle.jdbc', module: 'ojdbc7'
+    all*.exclude group: 'com.oracle.jdbc', module: 'ucp'
+    all*.exclude group: 'com.oracle.jdbc', module: 'ojdbc8'
+    all*.exclude group: 'io.astefanutti.metrics.aspectj', module: 'metrics-aspectj'
+    all*.exclude group: 'org.apache.directory.server', module: '*'
+    all*.exclude group: 'javax.inject', module: 'javax.inject'
+    all*.exclude group: 'org.apache.logging.log4j', module: 'log4j-slf4j-impl'
+    all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+}
+
+task printVersion {
+    file("${rootDir}/CHANGELOG.md").eachLine { line ->
+        def matcher = line =~ /##.*\[(\d+\.\d+\.\d+)\].*/
+
+        if (matcher.matches() && project.version == "unspecified") {
+            project.version = matcher[0][1]
+        }
+    }
+    println project.version
+}
+
+dependencies {
+    // infofabric-common library
+    implementation group: 'com.opentext.infofabric', name: 'common-drop-wizard', version: "$IFABRIC_COMMON_VERSION"
+    implementation group: 'com.opentext.infofabric', name: 'registrar-clients', version: "$registrar_version"
+    implementation group: 'com.opentext.infofabric', name: 'datamodel-client', version: "$datamodelClientVersion"
+
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: "$log4jVersion"
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: "$log4jVersion"
+
+    implementation(group: 'io.dropwizard', name: 'dropwizard-core', version: "$dropwizardVersion") {
+        exclude group: 'javax.inject', module: 'javax.inject'
+    }
+    implementation group: 'io.dropwizard', name: 'dropwizard-auth', version: "$dropwizardVersion"
+    implementation group: 'io.dropwizard', name: 'dropwizard-client', version: "$dropwizardVersion"
+    implementation group: 'io.dropwizard', name: 'dropwizard-assets', version: "$dropwizardVersion"
+    implementation group: 'io.dropwizard', name: 'dropwizard-metrics-graphite', version: "$dropwizardVersion"
+    implementation group: 'com.google.code.gson', name: 'gson', version: "$gsonVersion"
+    implementation group: 'com.healthmarketscience.sqlbuilder', name: 'sqlbuilder', version: "$sqlBuilderVersion"
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: "$jacksonVersion"
+    implementation(group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: "$jacksonVersion") {
+        exclude group: 'slf4j-log4j12', module: 'org.slf4j'
+        exclude group: 'log4j-over-slf4j', module: 'org.slf4j'
+    }
+
+    implementation "org.postgresql:postgresql:$pgVersion"
+    implementation group: 'com.graphql-java', name: 'graphql-java', version: "$graphqlVersion"
+    implementation group: 'com.google.inject', name: 'guice', version: "$guiceVersion"
+    implementation group: 'commons-codec', name: 'commons-codec', version: "$codecVersion"
+
+
+    implementation(group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: "$logstashEncoderVersion") {
+        exclude group: 'slf4j-log4j12', module: 'org.slf4j'
+        exclude group: 'log4j-over-slf4j', module: 'org.slf4j'
+    }
+
+//    implementation group: 'com.liaison.commons', name: 'lib_logging', version: "$liaisonLibLoggingVersion"
+//    implementation group: 'com.liaison', name: 'dm-datagate-rdbms', version: "$liaisonDataGateVersion"
+
+    implementation group: 'com.netflix.archaius', name: 'archaius-core', version: "$archaiusCoreVersion"
+    implementation(group: 'io.swagger', name: 'swagger-jaxrs', version: "$swaggerVersion") {
+        exclude(module: 'jackson-jaxrs-json-provider')
+        exclude(module: 'jackson-core')
+        exclude(module: 'jackson-annotations')
+        exclude(module: 'jackson-databind')
+        exclude(module: 'commons-lang3')
+        exclude(module: 'jsr311-api')
+    }
+
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: "$slf4jVersion"
+
+    implementation group: 'xerces', name: 'xercesImpl', version: "$xercesImpl"
+    implementation group: 'com.zaxxer', name: 'HikariCP', version: "$hikariCPVersion"
+    implementation group: 'io.prometheus', name: 'simpleclient', version: "$prometheusVersion"
+    implementation group: 'io.prometheus', name: 'simpleclient_hotspot', version: "$prometheusVersion"
+    implementation group: 'io.prometheus', name: 'simpleclient_httpserver', version: "$prometheusVersion"
+    implementation group: 'io.prometheus', name: 'simpleclient_pushgateway', version: "$prometheusVersion"
+    implementation group: 'io.prometheus', name: 'simpleclient_dropwizard', version: "$prometheusVersion"
+    implementation group: 'io.prometheus', name: 'simpleclient_common', version: "$prometheusVersion"
+    implementation group: 'io.prometheus', name: 'simpleclient_servlet', version: "$prometheusVersion"
+
+    implementation group: 'com.google.inject.extensions', name: 'guice-assistedinject', version: '3.0'
+
+    implementation (group: 'com.opentext.infofabric', name: 'app-state-client', version: "$appStateVersion") {
+        exclude group: 'com.sun.jersey', module: '*'
+        exclude group: 'javax.servlet',  module: '*'
+    }
+
+    testImplementation group: 'io.dropwizard', name: 'dropwizard-testing', version: "$dropwizardVersion"
+    testImplementation group: 'org.testng', name: 'testng', version: "$testngVersion"
+    testImplementation group: 'org.apache.commons', name: 'commons-csv', version: "$commonsCvsVersion"
+    testImplementation(group: 'org.apache.hbase', name: 'hbase-testing-util', version: "$hbaseTestVersion") {
+        exclude group: 'com.sun.jersey', module: 'jersey-client'
+        exclude group: 'com.sun.jersey', module: 'jersey-core'
+        exclude group: 'com.sun.jersey', module: 'jersey-json'
+        exclude group: 'com.sun.jersey', module: 'jersey-server'
+        exclude group: 'com.sun.jersey.contribs', module: 'jersey-guice'
+        exclude group: 'javax.servlet', module: 'servlet-api'
+        exclude group: 'org.apache.hadoop', module: 'hadoop-common'
+        exclude group: 'org.mortbay.jetty', module: '*'
+    }
+    testImplementation group: 'com.opentable.components', name: 'otj-pg-embedded', version: "$pgEmbeddedVersion"
+    testImplementation group: 'org.mockito', name: 'mockito-all', version: "$mockitoVersion"
+
+
+}
+
+task stampCurrentVersion {
+    doLast {
+        ant.copy(file: 'src/main/java/com/liaison/dataquery/Version.java.template', toFile: 'src/main/java/com/liaison/dataquery/Version.java', overwrite: true)
+                {
+                    filterchain {
+                        tokenfilter { replaceregex(pattern: 'VERSION_PLACEHOLDER', replace: "${project.version}") }
+                        tokenfilter {
+                            replaceregex(pattern: 'COMMIT_PLACEHOLDER', replace: "${getCheckedOutGitCommitHash()}")
+                        }
+                    }
+                }
+    }
+}
+
+gradle.projectsEvaluated {
+    compileJava.dependsOn(stampCurrentVersion)
+}
+
+def getCheckedOutGitCommitHash() {
+    def gitFolder = "$rootDir/.git/"
+    def takeFromHash = 12
+
+    def head = new File(gitFolder + "HEAD").text.split(":")
+    def isCommit = head.length == 1
+
+    if (isCommit) return head[0].trim().take(takeFromHash)
+
+    def refHead = new File(gitFolder + head[1].trim())
+    refHead.text.trim().take takeFromHash
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.liaison.dataquery.DataqueryApplication'
+    }
+}
+
+
+test {
+    jacoco {
+        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+    }
+    useTestNG()
+}
+
+if (!hasProperty('mainClass')) {
+    ext.mainClass = 'com.liaison.dataquery.DataqueryApplication'
+}
+
+tasks.withType(JavaExec) {
+    // JVM memory added especially for Kubernetes
+
+    def defaultTruststoreFileName = '/opt/liaison/components/alloy-truststore/cacerts'
+    def cacertsfile = new File("${defaultTruststoreFileName}")
+
+    if (cacertsfile.exists()) {
+        systemProperty 'javax.net.ssl.trustStore', "${defaultTruststoreFileName}"
+        systemProperty 'javax.net.ssl.trustStoreType', 'JKS'
+        systemProperty 'javax.net.ssl.trustStorePassword', 'ch@ng3d1t'
+    } else {
+        if (null != System.getProperty('javax.net.ssl.trustStore')) {
+            systemProperties['javax.net.ssl.trustStore'] = System.getProperty('javax.net.ssl.trustStore')
+        }
+
+        if (null != System.getProperty('javax.net.ssl.trustStoreType')) {
+            systemProperties['javax.net.ssl.trustStoreType'] = System.getProperty('javax.net.ssl.trustStoreType')
+        }
+
+        if (null != System.getProperty('javax.net.ssl.trustStorePassword')) {
+            systemProperties['javax.net.ssl.trustStorePassword'] = System.getProperty('javax.net.ssl.trustStorePassword')
+        }
+    }
+
+
+    main = mainClass
+    jvmArgs '-server'
+    classpath = sourceSets.main.runtimeClasspath
+    args "server", "conf/local-dm-dataquery.yml"
+
+}
+
+resultSetsToConsolidate {
+    test {
+        // Defines the directory to lookup files to consolidate.
+        resultsDir = file("$buildDir/test-results/$name")
+        // Test suite's name-attribute value to be written into the consolidated file.
+        suiteName = 'Dataquery test results'
+    }
+}
+
+apply from: file('gradle/convention.gradle')
+apply from: file('gradle/sonar.gradle')
+//apply from: file('gradle/check.gradle')
+apply from: file('gradle/distribution.gradle')
+apply from: file('gradle/maven.gradle')

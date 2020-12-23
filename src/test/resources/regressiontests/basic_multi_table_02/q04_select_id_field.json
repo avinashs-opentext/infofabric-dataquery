@@ -1,0 +1,37 @@
+/**
+ * Copyright 2018 Liaison Technologies, Inc.
+ * This software is the confidential and proprietary information of
+ * Liaison Technologies, Inc. ("Confidential Information").  You shall
+ * not disclose such Confidential Information and shall use it only in
+ * accordance with the terms of the license agreement you entered into
+ * with Liaison Technologies.
+ */
+{
+  "data": {
+    "Customer_query": [
+      {
+        "id": "1",
+        "name": "Abbey De Vuyst",
+        "address": "3456 Old milton pkwy",
+        "customer_orders": [
+          {
+            "orderId": "ord-104",
+            "itemdesc": "recliner"
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "name": "Niall Decort",
+        "address": "7890 Northpoint pkwy",
+        "customer_orders": [
+          {
+            "orderId": "ord-101",
+            "itemdesc": "dining table"
+          }
+        ]
+      }
+    ]
+  },
+  "errors": []
+}

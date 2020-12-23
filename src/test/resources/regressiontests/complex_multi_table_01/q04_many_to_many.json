@@ -1,0 +1,41 @@
+/**
+ * Copyright 2018 Liaison Technologies, Inc.
+ * This software is the confidential and proprietary information of
+ * Liaison Technologies, Inc. ("Confidential Information").  You shall
+ * not disclose such Confidential Information and shall use it only in
+ * accordance with the terms of the license agreement you entered into
+ * with Liaison Technologies.
+ */
+{
+  "data": {
+    "Department_query": [
+      {
+        "DepartmentId": "101",
+        "dep_emp": [
+          {
+            "EmployeeId": "1",
+            "name": "Veena"
+          },
+          {
+            "EmployeeId": "2",
+            "name": "Raj D"
+          }
+        ]
+      },
+      {
+        "DepartmentId": "102",
+        "dep_emp": [
+          {
+            "EmployeeId": "3",
+            "name": "Niall Decort"
+          },
+          {
+            "EmployeeId": "4",
+            "name": "Hadley Ruggier"
+          }
+        ]
+      }
+    ]
+  },
+  "errors": []
+}

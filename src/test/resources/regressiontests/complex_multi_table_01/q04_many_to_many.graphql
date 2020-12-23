@@ -1,0 +1,13 @@
+{    Department_query (
+        filterset: {
+            filters: [
+                { field: "DepartmentId" op: EQ value: "101" },
+                { field: "DepartmentId" op: EQ value: "102" }
+            ],
+            op: OR
+        }
+    )
+    { DepartmentId dep_emp { EmployeeId name }
+    }
+
+}

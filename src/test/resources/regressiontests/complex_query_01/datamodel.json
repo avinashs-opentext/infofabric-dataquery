@@ -1,0 +1,139 @@
+/**
+ * Copyright 2018 Liaison Technologies, Inc.
+ * This software is the confidential and proprietary information of
+ * Liaison Technologies, Inc. ("Confidential Information").  You shall
+ * not disclose such Confidential Information and shall use it only in
+ * accordance with the terms of the license agreement you entered into
+ * with Liaison Technologies.
+ */
+{
+  "name": "DMTestModel",
+  "types": [
+    {
+      "id": "EmployerTypeId",
+      "name": "Employer",
+      "keyFieldName": "EmployerId",
+      "attributes": [
+        {
+          "name": "companyName",
+          "type": "STRING"
+        },
+        {
+          "name": "industry",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "id": "EmployeeTypeId",
+      "name": "Employee",
+      "keyFieldName": "EmployeeId",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "STRING"
+        },
+        {
+          "name": "title",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "name": "Contact",
+      "id": "ContactTypeId",
+      "keyFieldName": "ContactId",
+      "attributes": [
+        {
+          "name": "phone",
+          "type": "STRING"
+        },
+        {
+          "name": "address",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "name": "Department",
+      "id": "DepartmentTypeId",
+      "keyFieldName": "DepartmentId",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "STRING"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "name": "EmployerEmployee",
+      "members": [
+        {
+          "name": "employer_employee",
+          "cardinality": {
+            "minInt": "1",
+            "maxInt": "1"
+          },
+          "typeId": "EmployerTypeId"
+        },
+        {
+          "name": "employee_employer",
+          "cardinality": {
+            "minInt": "1",
+            "maxInt": "-1"
+          },
+          "typeId": "EmployeeTypeId",
+          "keyFieldName": "EmployerId"
+        }
+      ]
+    },
+    {
+      "name": "EmployeeContact",
+      "members": [
+        {
+          "name": "employee_contact",
+          "cardinality": {
+            "minInt": "1",
+            "maxInt": "1"
+          },
+          "typeId": "EmployeeTypeId",
+          "keyFieldName": "ContactId"
+        },
+        {
+          "name": "contact_employee",
+          "cardinality": {
+            "minInt": "1",
+            "maxInt": "1"
+          },
+          "typeId": "ContactTypeId",
+          "keyFieldName": "EmployeeId"
+        }
+      ]
+    },
+    {
+      "name": "EmployeeDepartment",
+      "members": [
+        {
+          "name": "dep_emp",
+          "cardinality": {
+            "minInt": "1",
+            "maxInt": "-1"
+          },
+          "typeId": "EmployeeTypeId",
+          "keyFieldName": "DepartmentId"
+        },
+        {
+          "name": "dep_emp",
+          "cardinality": {
+            "minInt": "1",
+            "maxInt": "-1"
+          },
+          "typeId": "DepartmentTypeId",
+          "keyFieldName": "EmployeeId"
+        }
+      ]
+    }
+  ]
+}

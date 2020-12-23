@@ -1,0 +1,30 @@
+<!--
+
+    Copyright 2018 Liaison Technologies, Inc.
+    This software is the confidential and proprietary information of
+    Liaison Technologies, Inc. ("Confidential Information").  You shall
+    not disclose such Confidential Information and shall use it only in
+    accordance with the terms of the license agreement you entered into
+    with Liaison Technologies.
+
+-->
+<script>
+var qp = null;
+if(window.location.hash) {
+  qp = location.hash.substring(1);
+}
+else {
+  qp = location.search.substring(1);
+}
+qp = qp ? JSON.parse('{"' + qp.replace(/&/g, '","').replace(/=/g,'":"') + '"}',
+  function(key, value) {
+    return key===""?value:decodeURIComponent(value) }
+  ):{}
+
+if (window.opener.swaggerUi.tokenUrl)
+    window.opener.processOAuthCode(qp);
+else
+    window.opener.onOAuthComplete(qp);
+
+window.close();
+</script>

@@ -1,0 +1,24 @@
+// Maven side of things
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+apply plugin: 'maven-publish-auth'
+
+publishing {
+    repositories {
+        maven {
+            if (version.endsWith('-SNAPSHOT')) {
+                name 'liaison-dm-snapshots'
+                url 'https://artifactory.otxlab.net/artifactory/liaison-dm-snapshots'
+            } else {
+                name 'liaison-dm-releases'
+                url 'https://artifactory.otxlab.net/artifactory/liaison-dm-releases/'
+            }
+        }
+    }
+
+    publications {
+        service(MavenPublication) {
+            artifact source: distTar, extension: "tgz"
+        }
+    }
+}

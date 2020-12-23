@@ -1,0 +1,38 @@
+version: '3.3'
+services:
+
+  dataquery:
+    container_name: dataquery
+    build:
+      context: .
+      args:
+        - SERVICE_VERSION
+    image: dataquery
+    environment:
+      - SERVICE_VERSION
+      - DM_ENV=dev
+    ports:
+      - "9443:9443"
+    volumes:
+      - /opt/bdmp:/opt/bdmp
+      - /opt/liaison/components/alloy-truststore:/opt/liaison/components/alloy-truststore
+    networks:
+      - dataquery
+
+  dataquery-node:
+    image: dataquery
+    depends_on:
+      - dataquery
+    environment:
+      - SERVICE_VERSION
+      - DM_ENV=dev
+    expose:
+      - "9443"
+    volumes:
+      - /opt/bdmp:/opt/bdmp
+      - /opt/liaison/components/alloy-truststore:/opt/liaison/components/alloy-truststore
+    networks:
+      - dataquery
+networks:
+  dataquery:
+    driver: bridge

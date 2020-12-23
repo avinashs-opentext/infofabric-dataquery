@@ -1,0 +1,11 @@
+{
+    Person_scroll(skip: 2, limit: 2, sort: {field: "PersonId", direction: DESC})
+    {
+        PersonId
+        FirstName
+        LastName
+        Email
+        Phone
+        Address
+    }
+}

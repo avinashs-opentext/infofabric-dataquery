@@ -1,0 +1,12 @@
+{
+    Author_by_id(id: 4)
+    {
+        name
+        isAnyGood
+    }
+    Book_by_id(id: 11)
+    {
+        title
+        language
+    }
+}

@@ -1,0 +1,7 @@
+{
+    Person_query(filterset: {filters:[{field: "Salary" op: EQ value: "I should be a double"}]})
+    {
+        FirstName
+        Salary
+    }
+}

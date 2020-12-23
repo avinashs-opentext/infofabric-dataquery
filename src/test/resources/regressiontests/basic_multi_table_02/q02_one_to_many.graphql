@@ -1,0 +1,14 @@
+{
+  Customer_query (
+  filterset: {
+      filters: [
+        { field: "name" op: EQ value: "Blinny Lahy" },
+        { field: "name" op: EQ value: "Niall Decort" }
+        ],
+        op: OR
+      }
+      )
+      {
+        name address customer_orders { orderId itemdesc }
+    }
+}

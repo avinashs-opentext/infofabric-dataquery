@@ -1,0 +1,7 @@
+{
+    Book_non_existing_method(id: 11)
+    {
+        title
+        language
+    }
+}

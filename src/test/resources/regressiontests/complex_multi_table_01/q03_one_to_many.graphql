@@ -1,0 +1,15 @@
+{
+  Employer_query (
+  filterset: {
+      filters: [
+        { field: "EmployerId" op: EQ value: "1001" },
+        { field: "EmployerId" op: EQ value: "2001" }
+        ],
+        op: OR
+      }
+      )
+      {
+        EmployerId employer_employee { name EmployeeId }
+    }
+
+}

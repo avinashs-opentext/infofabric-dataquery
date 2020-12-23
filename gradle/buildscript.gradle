@@ -1,0 +1,23 @@
+// Executed in context of buildscript
+repositories {
+   // maven { url 'http://nexus.liaison.dev/content/repositories/central' }
+//    maven { url 'https://cache-artifactory-maven.at4d.liacloud.com/artifactory/repo1.maven.central/' }
+    maven { url 'https://artifactory.otxlab.net/artifactory/repo1.maven.central/' }
+    //maven { url 'http://nexus.liaison.dev/content/repositories/gradle-plugins' }
+    maven { url 'https://artifactory.otxlab.net/artifactory/gradle-plugins/' }
+//    maven { url 'https://cache-artifactory-maven.at4d.liacloud.com/artifactory/plugins-gradle-org/' }
+	maven { url 'https://artifactory.otxlab.net/artifactory/plugins-gradle-org/' }
+}
+
+dependencies {
+    classpath "com.netflix.nebula:gradle-ospackage-plugin:2.2.0" // rpm, dep package
+    classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.11.0' // license
+    classpath "net.saliman:gradle-cobertura-plugin:2.2.7" // cobertura
+    classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3' // shadow
+    classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.2.1'
+    classpath 'com.kageiit:url-cache-plugin:1.+'
+    classpath 'org.hibernate.build.gradle:gradle-maven-publish-auth:2.+'
+    //Third party lib license report
+    //https://github.com/jk1/Gradle-License-Report
+    classpath 'gradle.plugin.com.github.jk1:gradle-license-report:1.2'
+}

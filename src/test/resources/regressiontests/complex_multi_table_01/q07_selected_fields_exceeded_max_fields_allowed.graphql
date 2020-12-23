@@ -1,0 +1,14 @@
+{    Employee_query (
+        filterset: {
+            filters: [
+                { field: "EmployeeId" op: EQ value: "1" },
+                { field: "EmployeeId" op: EQ value: "2" }
+            ],
+            op: OR
+        }
+        sort: { field: "EmployeeId" direction :ASC}
+    )
+    { EmployeeId name title dep_emp { DepartmentId name dep_emp { EmployeeId name title }}
+        employee_contact { ContactId phone address }
+    }
+}

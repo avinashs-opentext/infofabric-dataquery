@@ -1,0 +1,12 @@
+{    Employee_query (
+                        filterset: {
+                            filters: [
+                                { field: "EmployeeId" op: EQ value: "1" },
+                                { field: "EmployeeId" op: EQ value: "3" }
+                            ],
+                            op: OR
+                        }
+                    )
+                { name EmployeeId employee_contact { ContactId phone address}
+                }
+}

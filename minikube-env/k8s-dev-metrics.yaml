@@ -1,0 +1,67 @@
+### alloy-datamanagement-dataquery development environment resources
+#
+apiVersion: v1
+kind: Service
+metadata:
+  name: alloy-datamanagement-dataquery-metrics
+spec:
+  selector:
+    app: alloy-datamanagement-dataquery-metrics
+  ports:
+  - name: influxdb-http
+    nodePort: 31086
+    protocol: TCP
+    port: 8086
+  - name: influxdb-admin
+    nodePort: 31083
+    protocol: TCP
+    port: 8083
+  - name: grafana
+    nodePort: 31001
+    protocol: TCP
+    port: 3000
+  type: NodePort
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: alloy-datamanagement-dataquery-metrics
+  labels:
+    app: alloy-datamanagement-dataquery-metrics
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: alloy-datamanagement-dataquery-metrics
+    spec:
+      containers:
+      - name: alloy-datamanagement-dataquery-influxdb
+        image: influxdb:1.2.4
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: influxdb-http
+          containerPort: 8086
+        - name: influxdb-admin
+          containerPort: 8083
+        env:
+        - name: INFLUXDB_ADMIN_ENABLED
+          value: "true"
+        volumeMounts:
+        - name: alloy-datamanagement-dataquery-metrics
+          mountPath: /var/lib/influxdb
+          subPath: influxdb
+      - name: alloy-datamanagement-dataquery-grafana
+        image: grafana/grafana
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: grafana
+          containerPort: 3000
+        volumeMounts:
+        - name: alloy-datamanagement-dataquery-metrics
+          mountPath: /var/lib/grafana
+          subPath: grafana
+      volumes:
+      - name: alloy-datamanagement-dataquery-metrics
+        persistentVolumeClaim:
+          claimName: alloy-datamanagement-dataquery-metrics

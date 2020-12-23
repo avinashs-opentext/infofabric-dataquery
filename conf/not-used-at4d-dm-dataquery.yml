@@ -1,0 +1,137 @@
+server:
+    maxThreads: 200
+    minThreads: 200
+    maxQueuedRequests: 9999
+    requestLog:
+      appenders: []
+    applicationConnectors:
+        - type: https
+          port: 9443
+          idleTimeout: 300 seconds
+          keyStorePath: /opt/bdmp/secure/star.liaison.dev.jks
+          keyStorePassword: f80fccf987f073a59def5029eabf0ca1
+          validateCerts: false
+          supportedProtocols: ["TLSv1.2"]
+          supportedCipherSuites: [
+          "TLS_RSA_WITH_AES_256_CBC_SHA256",
+          "TLS_RSA_WITH_AES_256_CBC_SHA",
+          "TLS_RSA_WITH_AES_128_CBC_SHA256",
+          "TLS_RSA_WITH_AES_128_CBC_SHA"]
+          excludedCipherSuites:
+           - SSL_RSA_WITH_DES_CBC_SHA
+           - SSL_DHE_RSA_WITH_DES_CBC_SHA
+           - SSL_DHE_DSS_WITH_DES_CBC_SHA
+           - SSL_RSA_EXPORT_WITH_RC4_40_MD5
+           - SSL_RSA_EXPORT_WITH_DES40_CBC_SHA
+           - SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA
+           - SSL_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA
+    adminConnectors:
+        - type: https
+          port: 8077
+          idleTimeout: 300 seconds
+          keyStorePath: /opt/bdmp/secure/star.liaison.dev.jks
+          keyStorePassword: f80fccf987f073a59def5029eabf0ca1
+          validateCerts: false
+          supportedProtocols: ["TLSv1.2"]
+          supportedCipherSuites: [
+          "TLS_RSA_WITH_AES_256_CBC_SHA256",
+          "TLS_RSA_WITH_AES_256_CBC_SHA",
+          "TLS_RSA_WITH_AES_128_CBC_SHA256",
+          "TLS_RSA_WITH_AES_128_CBC_SHA"]
+          excludedCipherSuites:
+           - SSL_RSA_WITH_DES_CBC_SHA
+           - SSL_DHE_RSA_WITH_DES_CBC_SHA
+           - SSL_DHE_DSS_WITH_DES_CBC_SHA
+           - SSL_RSA_EXPORT_WITH_RC4_40_MD5
+           - SSL_RSA_EXPORT_WITH_DES40_CBC_SHA
+           - SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA
+           - SSL_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA
+
+symmetricKeyPath: /opt/bdmp/secure/dev-int-symmetric.key
+
+
+
+environment: AT4D
+
+enableSSO: true
+
+datamodel:
+  type: default
+  host: at4d-lvdmdm01.liaison.dev
+  port: 9443
+  
+disableAdminContextAuth: false
+
+rdbms:
+  url: jdbc:postgresql://at4d-lvpstsql01.liaison.dev:5432/
+  user: d2app
+  password: aa0f1b57d899b9d0e4b675f1fb873120
+  hikari:
+    maximumPoolSize: 10
+    minimumIdle: 0
+    # This will cause the pool creation to not validate the connection, only validate when actually requesting a connection from the pool.
+    initializationFailTimeout: -1
+  hikariDataSource:
+    ssl: true
+    insecure: false
+
+
+ssoClient:
+  identityGatewayUrl: https://at4dh.liaison.dev/sso-gateway
+  cacheSize: 1
+  cacheTtl: 1 # seconds
+  clientId: alloy-microservice
+  clientSecret: 090ad66b629821239efe6c46ac2b5917
+
+##Conflux admin client configuration
+admin:
+  servers: at4d-lpdbstor01.liaison.dev:8443,at4d-lpdbstor02.liaison.dev:8443,at4d-lpdbstor03.liaison.dev:8443
+  secure: true
+  user: d2app
+  pass: aa0f1b57d899b9d0e4b675f1fb873120
+  volumeBasePath: apps
+  ignoreSslValidation: true
+  fs.mapr.bailout.on.library.mismatch: false
+  timeout-cfg:
+    connection-timeout: 1500000
+    pool-timeout: 1500000
+    request-timeout: 1500000
+  pool-cfg:
+    connection-options:
+      insecure?: true
+
+metricReporter:
+    enabled: false
+    # this can be csv or console for now
+    type: csv
+    directory: /tmp/metrics
+    interval: 30
+
+maprAdminClientConfig:
+  servers: at4d-lpdbstor01.liaison.dev:8443,at4d-lpdbstor02.liaison.dev:8443,at4d-lpdbstor03.liaison.dev:8443
+  secure: true
+  user: d2app
+  pass: aa0f1b57d899b9d0e4b675f1fb873120
+  timeout-cfg:
+    connection-timeout: 30000
+    request-timeout: 30000
+    
+logging:
+
+  # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
+  level: INFO
+
+  # Logger-specific levels.
+  loggers:
+    com.liaison: TRACE
+
+  appenders:
+    - type: console
+    - type: file
+      threshold: ALL
+      logFormat: "%-6level [%d{HH:mm:ss.SSS}] [%t] %logger{5} - %X{code} %msg %n"
+      currentLogFilename: /opt/bdmp/logs/dm-dataquery.log
+      archivedLogFilenamePattern: /opt/bdmp/logs/dm-dataquery-%i.log.gz
+      archivedFileCount: 10
+      timeZone: UTC
+      maxFileSize: 100MB

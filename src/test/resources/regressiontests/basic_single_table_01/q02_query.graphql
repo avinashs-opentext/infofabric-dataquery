@@ -1,0 +1,6 @@
+{
+    Person_query(filterset: {filters:[{field: "LastName" op: EQ value: "Smith"}]} skip: 0 limit: 2 sort: {field: "FirstName", direction: ASC})
+    {
+        FirstName
+    }
+}

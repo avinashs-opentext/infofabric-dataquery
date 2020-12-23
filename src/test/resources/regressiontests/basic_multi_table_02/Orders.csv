@@ -1,0 +1,6 @@
+customerId,orderId,itemdesc
+2,ord-101,dining table
+0,ord-102,telivision
+3,ord-103,book shelf
+1,ord-104,recliner
+NULL,ord-105,sofa

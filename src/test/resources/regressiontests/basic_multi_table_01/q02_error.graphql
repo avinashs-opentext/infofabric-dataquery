@@ -1,0 +1,8 @@
+{
+    Book_by_id(id: 11)
+    {
+        title
+        language
+        notAnAttribute
+    }
+}

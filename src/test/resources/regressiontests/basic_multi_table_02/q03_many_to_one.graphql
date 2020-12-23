@@ -1,0 +1,14 @@
+{
+  Orders_query (
+  filterset: {
+      filters: [
+        { field: "orderId" op: EQ value: "ord-105" }
+        { field: "orderId" op: EQ value: "ord-103" }
+        ],
+        op: OR
+      }
+      )
+      {
+        orderId itemdesc orders_customer { name address }
+    }
+}

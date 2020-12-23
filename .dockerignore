@@ -1,0 +1,4 @@
+*
+!build/distributions/*.tgz
+!containerstart.sh
+!build/install/dm-dataquery/*

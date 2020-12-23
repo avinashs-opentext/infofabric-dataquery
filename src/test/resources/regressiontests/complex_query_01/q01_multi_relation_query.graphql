@@ -1,0 +1,15 @@
+#QUERY_MODEL=SINGLE_QUERY
+{    Employee_query (
+    filterset: {
+        filters: [
+            { field: "EmployeeId" op: EQ value: "1" },
+            { field: "dep_emp.dep_emp.EmployeeId" op: EQ value: "2" },
+            { field: "employee_contact.phone" op: LIKE value: "404-%" }
+        ],
+        op: AND
+    }
+    sort: { field: "EmployeeId" direction :ASC}
+)
+{ EmployeeId dep_emp { DepartmentId name dep_emp { EmployeeId name }} employee_contact { ContactId phone }
+}
+}

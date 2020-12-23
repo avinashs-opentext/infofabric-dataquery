@@ -1,0 +1,12 @@
+{
+    Customer_by_id(id: 3)
+    {
+        name
+        address
+    }
+    Orders_by_id(id: 2)
+    {
+        orderId
+        itemdesc
+    }
+}

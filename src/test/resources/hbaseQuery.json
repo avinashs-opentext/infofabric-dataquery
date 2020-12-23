@@ -1,0 +1,29 @@
+/**
+ * Copyright 2018 Liaison Technologies, Inc.
+ * This software is the confidential and proprietary information of
+ * Liaison Technologies, Inc. ("Confidential Information").  You shall
+ * not disclose such Confidential Information and shall use it only in
+ * accordance with the terms of the license agreement you entered into
+ * with Liaison Technologies.
+ */
+{
+	"table": "table_name",
+	"rowKeys": [
+		"row_key_1",
+		"row_key_2"
+	],
+	"where": [
+		{
+			"family": "column_family_name",
+			"column": "column_name",
+			"value":"data_value"
+		}
+	],
+	"select": [
+		{
+			"family": "column_family_name",
+			"column": "column_name",
+			"convertTo": "string"
+		}
+	]
+}

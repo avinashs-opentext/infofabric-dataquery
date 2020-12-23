@@ -1,0 +1,25 @@
+apply plugin: 'java'
+apply plugin: 'org.sonarqube'
+
+sonarqube {
+    properties {
+        property 'sonar.projectName', rootProject.name
+        property 'sonar.scm.provider', 'git'
+        property 'sonar.github.repository', 'LiaisonTechnologies/infofabric-dataquery'
+        property 'sonar.jdbc.username', 'sonar'
+        property 'sonar.jdbc.password', 'sonar'
+        property 'sonar.host.url', 'http://lsvlsonar01d.liaison.dev'
+        property 'sonar.jdbc.url', 'jdbc:mysql://lsvlsonar01d.liaison.dev:3306/sonar' + '?' +
+                'useUnicode=true' + '&' +
+                'characterEncoding=utf8' + '&' +
+                'rewriteBatchedStatements=true' + '&' +
+                'useConfigs=maxPerformance'
+        property 'sonar.jacoco.reportPath', "$buildDir/jacoco/jacocoTest.exec"
+        property 'sonar.exclusions', 'src/main/resources/swagger/**'
+    }
+}
+
+task sonarqubeTests doLast { }
+task sonarqubeReports doLast { }
+rootProject.tasks["sonarqube"].dependsOn sonarqubeTests
+rootProject.tasks["sonarqube"].dependsOn sonarqubeReports

@@ -1,0 +1,6 @@
+{
+    Person_aggregate (aggregate: COUNT)
+        {
+            dq_aggregation_result
+        }
+}

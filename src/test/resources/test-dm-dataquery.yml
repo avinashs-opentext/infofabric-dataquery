@@ -1,0 +1,114 @@
+server:
+    maxThreads: 200
+    minThreads: 200
+    maxQueuedRequests: 9999
+    requestLog:
+      appenders: []
+    applicationConnectors:
+        - type: http
+          port: 30000
+    adminConnectors:
+        - type: http
+          port: 30001
+
+environment: LOCAL
+
+enableSSO: true
+
+maxGraphQLQueryComplexity: 10
+
+maxJoinFieldComplexity: 3
+
+defaultQueryModel: SINGLE_QUERY
+
+recordCacheStats: true
+cacheSize: 1000
+cacheTTLMs: 60000
+maxCacheEntryBytes: 10000
+
+rdbms:
+  url: jdbc:postgresql://localhost:5432/
+  user: postgres
+  password: postgres
+  hikari:
+    maximumPoolSize: 10
+    minimumIdle: 1
+    # This will cause the pool creation to not validate the connection, only validate when actually requesting a connection from the pool.
+    initializationFailTimeout: 50
+  hikariDataSource:
+    ssl: false
+    insecure: false
+
+loadBalancerConfig:
+  mode: memory
+  quorum: ""
+  clientPort: ""
+
+metricReporter:
+    enabled: false
+    # this can be csv or console for now
+    type: csv
+    directory: /tmp/metrics
+    interval: 30
+
+streamImplementation: MEM
+
+#symmetricKeyPath: /opt/bdmp/secure/dev-int-symmetric.key
+datastream:
+  hosts: at4d-vpdmds.liaison.dev:443
+  tls: true
+  insecure: false
+  symmetricKeyPath: /opt/bdmp/secure/dev-int-symmetric.key
+  socketTimeout: 30000
+  streamImplementation: MEM
+  streamPath:
+    MEM: /apps/dev/datamgt/%s/datastream/streams/_default:request-%s
+
+
+appState:
+  application:
+    name: dataquery
+  stream:
+    type: MEM
+    servers: localhost:8443
+    secure: false
+    user: d2app
+    password: 27a27992017b52740ae0778775ecae59
+    streamPath:
+       MEM: /apps/local/appstate/streams/%s:%s_%s
+  storage:
+    type: MEM
+
+
+
+#appState:
+#  application:
+#    name: dataquery
+#  stream:
+#    servers: at4d-lpdbstor03.liaison.dev:8443,at4d-lpdbstor02.liaison.dev:8443,at4d-lpdbstor01.liaison.dev:8443
+#    secure: true
+#    user: d2app
+#    password: aa0f1b57d899b9d0e4b675f1fb873120
+#    streamPath: /apps/dev/appstate/streams/%s:%s_%s
+#    consumer_groupid_suffix: dataquery
+#  storage:
+#    hosts: at4d-lvdbara47.liaison.dev:8529
+#    useSSL: true
+#    user: d2app
+#    password: aa0f1b57d899b9d0e4b675f1fb873120
+
+logging:
+
+  # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
+  level: INFO
+
+  # Logger-specific levels.
+  loggers:
+    com.liaison: TRACE
+
+  appenders:
+    - type: console
+
+registrarClient:
+  MEM:
+    streams-type: "memka"

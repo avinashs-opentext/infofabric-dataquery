@@ -1,0 +1,14 @@
+{
+    Person_aggregate (aggregate: COUNT
+    						filterset: {
+                            filtersets: [
+                            {filters: [
+                            	{ field: "Address" op: EQ value: "Test Street 1" }
+                            ]
+                            }
+                            ]
+                            })
+        {
+            dq_aggregation_result Address
+        }
+}

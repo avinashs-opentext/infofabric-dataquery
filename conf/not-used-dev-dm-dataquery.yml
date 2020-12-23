@@ -1,0 +1,95 @@
+
+#/appdata/dev/_appstate/appstate/streams/contivo:request-command_xx1
+server:
+    maxThreads: 200
+    minThreads: 200
+    maxQueuedRequests: 9999
+    requestLog:
+      appenders: []
+    applicationConnectors:
+        - type: http
+          port: 30000
+    adminConnectors:
+        - type: http
+          port: 30001
+
+symmetricKeyPath: /opt/bdmp/secure/dev-int-symmetric.key
+
+environment: DEV
+
+enableSSO: false
+
+# if true, use mock authentication and authorization clients
+mockAuth: true
+
+rdbms:
+  url: jdbc:sqlite::memory:
+  user:
+  password:
+  hikari:
+    maximumPoolSize: 10
+    minimumIdle: 0
+    # This will cause the pool creation to not validate the connection, only validate when actually requesting a connection from the pool.
+    initializationFailTimeout: -1
+  hikariDataSource:
+    ssl: true
+    insecure: false
+    className: org.sqlite.SQLiteDataSource
+
+appState:
+  application:
+    name: contivo
+  stream:
+    type: MEM
+    streamPath: /apps/dev/appstate/streams/%s:%s_%s
+  storage:
+    type: MEM
+
+ssoClient:
+  identityGatewayUrl: ""
+  cacheSize: 1
+  cacheTtl: 1 # seconds
+  clientId: alloy-microservice
+  clientSecret: 5ba895014a75f94bcdba0c6a54897da7
+
+  ##Conflux admin client configuration, no options for in-memory
+maprAdminClientConfig:
+
+
+
+datamodel:
+  type: default
+  host: localhost
+  port: 9443
+  mockCompiler: true
+
+loadBalancerConfig:
+  mode: memory
+
+
+metricReporter:
+    enabled: false
+    # this can be csv or console for now
+    type: csv
+    directory: /tmp/metrics
+    interval: 30
+
+logging:
+
+  # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
+  level: INFO
+
+  # Logger-specific levels.
+  loggers:
+    com.liaison: TRACE
+
+  appenders:
+    - type: console
+    - type: file
+      threshold: ALL
+      logFormat: "%-6level [%d{HH:mm:ss.SSS}] [%t] %logger{5} - %X{code} %msg %n"
+      currentLogFilename: /opt/bdmp/logs/dm-dataquery.log
+      archivedLogFilenamePattern: /opt/bdmp/logs/dm-dataquery-%i.log.gz
+      archivedFileCount: 10
+      timeZone: UTC
+      maxFileSize: 100MB

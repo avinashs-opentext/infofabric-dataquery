@@ -1,0 +1,65 @@
+/**
+ * Copyright 2018 Liaison Technologies, Inc.
+ * This software is the confidential and proprietary information of
+ * Liaison Technologies, Inc. ("Confidential Information").  You shall
+ * not disclose such Confidential Information and shall use it only in
+ * accordance with the terms of the license agreement you entered into
+ * with Liaison Technologies.
+ */
+{
+  "name": "CustomerOrderModel",
+  "types": [
+    {
+      "id": "CustomerTypeId",
+      "name": "Customer",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "STRING"
+        },
+        {
+          "name": "address",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "id": "OrdersTypeId",
+      "name": "Orders",
+      "attributes": [
+        {
+          "name": "orderId",
+          "type": "STRING"
+        },
+        {
+          "name": "itemdesc",
+          "type": "STRING"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "name": "CustomerOrders",
+      "members": [
+        {
+          "name": "customer_orders",
+          "cardinality": {
+            "minInt": "1",
+            "maxInt": "1"
+          },
+          "typeId": "CustomerTypeId"
+        },
+        {
+          "name": "orders_customer",
+          "cardinality": {
+            "minInt": "1",
+            "maxInt": "-1"
+          },
+          "typeId": "OrdersTypeId",
+          "keyFieldName": "customerId"
+        }
+      ]
+    }
+  ]
+}

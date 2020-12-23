@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  labels:
+    volume-purpose: alloy-datamanagement-dataquery
+    volume-type: hostpath
+  name: alloy-datamanagement-dataquery
+spec:
+  accessModes:
+  - ReadWriteMany
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: /var/tmp/dataquery
+    type: DirectoryOrCreate
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: alloy-datamanagement-dataquery-metrics
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Mi
+  selector:
+    matchLabels:
+      volume-type: hostpath
+      volume-purpose: alloy-datamanagement-dataquery

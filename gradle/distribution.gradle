@@ -1,0 +1,38 @@
+apply plugin: 'application'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+// Configure the shadow jar task
+shadowJar {
+    archiveVersion.set('')
+    mergeServiceFiles()
+    exclude 'META-INF/*.SF'
+    exclude 'META-INF/*.DSA'
+    exclude 'META-INF/*.RSA'
+}
+
+// application package zip or tar ball
+mainClassName = "com.liaison.dataquery.DataqueryApplication"
+
+distTar {
+    compression = Compression.GZIP
+    into(project.name) {
+        from 'conf'
+        include 'conf'
+    }
+
+    into(project.name) {
+        from 'bin'
+        include 'bin'
+    }
+}
+
+applicationDistribution.from('conf') {
+    include '*.yml'
+    into "conf"
+}
+
+applicationDistribution.from('bin') {
+    include '*'
+    into "bin"
+    fileMode 0755
+}

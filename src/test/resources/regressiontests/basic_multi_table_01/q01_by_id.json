@@ -1,0 +1,21 @@
+/**
+ * Copyright 2018 Liaison Technologies, Inc.
+ * This software is the confidential and proprietary information of
+ * Liaison Technologies, Inc. ("Confidential Information").  You shall
+ * not disclose such Confidential Information and shall use it only in
+ * accordance with the terms of the license agreement you entered into
+ * with Liaison Technologies.
+ */
+{
+  "data": {
+    "Author_by_id": {
+      "name": "Hadley Ruggier",
+      "isAnyGood": false
+    },
+    "Book_by_id": {
+      "title": "Tiny Furniture",
+      "language": "Swedish"
+    }
+  },
+  "errors": []
+}

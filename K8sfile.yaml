@@ -1,0 +1,491 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: alloy-datamanagement-dataquery
+spec:
+  selector:
+    app: alloy-datamanagement-dataquery
+  ports:
+  - name: application
+    protocol: TCP
+    port: 9443
+  - name: admin
+    protocol: TCP
+    port: 9444
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: alloy-datamanagement-dataquery
+  labels:
+    app: alloy-datamanagement-dataquery
+spec:
+  minReadySeconds: 5
+  replicas: 2
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: alloy-datamanagement-dataquery
+      zone: bb-hsec
+  strategy:
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: alloy-datamanagement-dataquery
+        zone: bb-hsec
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/path: '/metrics'
+        prometheus.io/scheme: 'https'
+    spec:
+      containers:
+      - name: alloy-datamanagement-dataquery
+        image: dm/dataquery:latest
+        imagePullPolicy: Always
+        ports:
+        - name: application
+          containerPort: 9443
+        - name: admin
+          containerPort: 9444
+        livenessProbe:
+          httpGet:
+            path: /1/dataquery/health?simple=true
+            port: application
+            scheme: HTTPS
+          initialDelaySeconds: 180
+          periodSeconds: 120
+          timeoutSeconds: 60
+        readinessProbe:
+          httpGet:
+            path: /1/dataquery/health?simple=true
+            port: application
+            scheme: HTTPS
+          initialDelaySeconds: 120
+          periodSeconds: 120
+          timeoutSeconds: 60
+        resources:
+          limits:
+            cpu: "1000m"
+            memory: 4Gi
+          requests:
+            cpu: "500m"
+            memory: 3Gi
+        env:
+        - name: KEYSTORE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: alloy-dm-common-secrets
+              key: KEYSTORE_PASSWORD
+        - name: PASSWORD_ENCRYPTION_FILE
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-dm-common
+              key: PASSWORD_ENCRYPTION_FILE
+        - name: DATAQUERY_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-datamanagement-dataquery
+              key: DATAQUERY_ENV
+        - name: DATAMODEL_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-dm-common
+              key: DATAMODEL_BASE_URL
+        - name: DATACAST_URL
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-dm-common
+              key: DATACAST_URL
+        - name: RDBMS_URL
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-dm-common
+              key: RDBMS_URL
+        - name: RDBMS_USER
+          valueFrom:
+            secretKeyRef:
+              name: alloy-dm-common-secrets
+              key: RDBMS_USER
+        - name: RDBMS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: alloy-dm-common-secrets
+              key: RDBMS_PASSWORD
+        - name: RDBMS_DB_NAME_SUFFIX
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-dm-common
+              key: RDBMS_DB_NAME_SUFFIX
+        - name: RDBMS_USE_SSL
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-dm-common
+              key: RDBMS_USE_SSL
+        - name: RDBMS_INSECURE
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-dm-common
+              key: RDBMS_INSECURE
+        - name: SSO_IDENTITYGATEWAY_API_URL
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-core-common
+              key: SSO_IDENTITYGATEWAY_API_URL
+        - name: SSO_CLIENT_ID
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-dm-common
+              key: SSO_CLIENT_ID
+        - name: SSO_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: alloy-dm-common-secrets
+              key: SSO_CLIENT_SECRET
+        - name: DM_SERVICE_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: alloy-dm-common-secrets
+              key: DM_SERVICE_TOKEN
+        - name: STREAM_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-datamanagement-dataquery
+              key: STREAM_ENV
+        - name: MAPR_ADMIN_CLIENT_SERVERS
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-dm-common
+              key: MAPR_ADMIN_CLIENT_SERVERS
+        - name: MAPR_ADMIN_CLIENT_USER
+          valueFrom:
+            secretKeyRef:
+              name: alloy-dm-common-secrets
+              key: MAPR_ADMIN_CLIENT_USER
+        - name: MAPR_ADMIN_CLIENT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: alloy-dm-common-secrets
+              key: MAPR_ADMIN_CLIENT_PASSWORD
+        - name: DEBUG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-datamanagement-dataquery
+              key: DEBUG_LEVEL
+        - name: NEWRELIC_AGENT_ENABLE
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-datamanagement-dataquery
+              key: NEWRELIC_AGENT_ENABLE
+        - name: ENABLE_SSO
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-datamanagement-dataquery
+              key: ENABLE_SSO
+        - name: MAX_GRAPHQL_QUERY_COMPLEXITY
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-datamanagement-dataquery
+              key: MAX_GRAPHQL_QUERY_COMPLEXITY
+        - name: MAX_JOIN_FIELD_COMPLEXITY
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-datamanagement-dataquery
+              key: MAX_JOIN_FIELD_COMPLEXITY
+        - name: DEFAULT_QUERY_MODEL
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-datamanagement-dataquery
+              key: DEFAULT_QUERY_MODEL
+        #kafka specifications
+        - name: DATASTREAM_KAFKA_PATH
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-datamanagement-dataquery
+              key: DATASTREAM_KAFKA_PATH
+        - name: STREAM_IMP_TYPE
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-dm-common
+              key: STREAM_IMP_TYPE
+        - name: KAFKA_BOOTSTRAP_SERVERS
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-dm-common
+              key: KAFKA_BOOTSTRAP_SERVERS
+        - name: KAFKA_SECURITY_PROTOCOL
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-dm-common
+              key: KAFKA_SECURITY_PROTOCOL
+        # new relic
+        - name: NEW_RELIC_APP_NAME
+          value: "DataQuery-Service-$(ENV)-$(PLATFORM)_$(DC)-$(BU)"
+        - name: ENV
+          valueFrom:
+            configMapKeyRef:
+              name: new-relic
+              key: ENV
+        - name: PLATFORM
+          valueFrom:
+            configMapKeyRef:
+              name: new-relic
+              key: PLATFORM
+        - name: CELL
+          valueFrom:
+            configMapKeyRef:
+              name: new-relic
+              key: CELL
+        - name: ZONE
+          valueFrom:
+            configMapKeyRef:
+              name: new-relic
+              key: ZONE
+        - name: DC
+          valueFrom:
+            configMapKeyRef:
+              name: new-relic
+              key: DC
+        - name: BU
+          valueFrom:
+            configMapKeyRef:
+              name: new-relic
+              key: BU
+        - name: CUSTOMER
+          valueFrom:
+            configMapKeyRef:
+              name: new-relic
+              key: CUSTOMER
+        - name: NEW_RELIC_PROXY_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: new-relic
+              key: NEW_RELIC_PROXY_HOST
+        - name: NEW_RELIC_PROXY_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: new-relic
+              key: NEW_RELIC_PROXY_PORT
+        - name: NEW_RELIC_LOG_FILE_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: new-relic
+              key: NEW_RELIC_LOG_FILE_NAME
+        - name: NEW_RELIC_DISTRIBUTED_TRACING_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              name: new-relic
+              key: NEW_RELIC_DISTRIBUTED_TRACING_ENABLED
+        - name: NEW_RELIC_SEND_DATA_ON_EXIT
+          valueFrom:
+            configMapKeyRef:
+              name: new-relic
+              key: NEW_RELIC_SEND_DATA_ON_EXIT
+        - name: NEW_RELIC_EXPLAIN_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              name: new-relic
+              key: NEW_RELIC_EXPLAIN_ENABLED
+        - name: NEW_RELIC_RECORD_SQL
+          valueFrom:
+            configMapKeyRef:
+              name: new-relic
+              key: NEW_RELIC_RECORD_SQL
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: new-relic
+              key: NEW_RELIC_LICENSE_KEY
+        - name: NEW_RELIC_PROXY_USER
+          valueFrom:
+            secretKeyRef:
+              name: new-relic
+              key: NEW_RELIC_PROXY_USER
+        - name: NEW_RELIC_PROXY_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: new-relic
+              key: NEW_RELIC_PROXY_PASSWORD
+        - name: MAX_CACHE_SIZE
+          value: "1000"
+        - name: CACHE_TTL_MS
+          value: "60000"
+        - name: MAX_CACHE_ENTRY_BYTES
+          value: "100000"
+        #
+        #  namedquery
+        #
+        - name: DATASTREAM_HOSTS
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-dm-common
+              key: DATASTREAM_HOSTS
+        - name: DATASTREAM_TLS
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-dm-common
+              key: DATASTREAM_TLS
+        - name: DATASTREAM_INSECURE
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-dm-common
+              key: DATASTREAM_INSECURE
+        - name: PASSWORD_ENCRYPTION_FILE
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-dm-common
+              key: PASSWORD_ENCRYPTION_FILE
+        - name: DATASTREAM_PATH
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-dm-common
+              key: DATASTREAM_PATH
+        - name: DATASTREAM_PATH_LEGACY
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-dm-common
+              key: DATASTREAM_PATH_LEGACY
+        - name: USE_LEGACY_STREAM
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-dm-common
+              key: USE_LEGACY_STREAM
+        - name: MAPR_ADMIN_CLIENT_SERVERS
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-dm-common
+              key: MAPR_ADMIN_CLIENT_SERVERS
+        - name: STREAM_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-dm-common
+              key: STREAM_ENV
+        - name: ARANGODB_HOSTS
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-dm-common
+              key: ARANGODB_HOSTS
+        - name: ARANGODB_USE_SSL
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-dm-common
+              key: ARANGODB_USE_SSL
+        - name: PASSWORD_ENCRYPTION_FILE
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-dm-common
+              key: PASSWORD_ENCRYPTION_FILE
+        - name: ARANGODB_USER
+          valueFrom:
+            secretKeyRef:
+              name: alloy-dm-common-secrets
+              key: ARANGODB_USER
+        - name: ARANGODB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: alloy-dm-common-secrets
+              key: ARANGODB_PASSWORD
+        - name: MAPR_ADMIN_CLIENT_USER
+          valueFrom:
+            secretKeyRef:
+              name: alloy-dm-common-secrets
+              key: MAPR_ADMIN_CLIENT_USER
+        - name: MAPR_ADMIN_CLIENT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: alloy-dm-common-secrets
+              key: MAPR_ADMIN_CLIENT_PASSWORD
+        - name: MAX_HTTP_CONNECTIONS
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-datamanagement-dataquery
+              key: MAX_HTTP_CONNECTIONS
+        - name: MAX_HTTP_CONNECTIONS_PER_ROUTE
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-datamanagement-dataquery
+              key: MAX_HTTP_CONNECTIONS_PER_ROUTE
+        - name: HTTP_POOL_TTL
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-datamanagement-dataquery
+              key: HTTP_POOL_TTL
+        - name: HTTP_POOL_KEEP_ALIVE
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-datamanagement-dataquery
+              key: HTTP_POOL_KEEP_ALIVE
+        - name: DATAMODEL_SVC_USER
+          valueFrom:
+            secretKeyRef:
+              name: alloy-datamanagement-dataquery
+              key: DATAMODEL_SVC_USER
+        - name: DATAMODEL_SVC_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: alloy-datamanagement-dataquery
+              key: DATAMODEL_SVC_PASSWORD
+        - name: APP_STATE_APPLICATION_ID
+          valueFrom:
+            configMapKeyRef:
+              name: alloy-datamanagement-dataquery
+              key: APP_STATE_APPLICATION_ID
+        - name: CONNECTION_TIMEOUT
+          value: "120000"
+        - name: CONNECTION_REQUEST_TIMEOUT
+          value: "120000"
+        - name: SOCKET_TIMEOUT
+          value: "120000"
+        volumeMounts:
+        - name: alloy-datamanagement-dataquery-mapr-conf
+          mountPath: /opt/mapr/conf/
+        - name: alloy-datamanagement-dataquery-bdmp
+          mountPath: /opt/bdmp/secure
+        - name: alloy-datamanagement-dataquery-truststore
+          mountPath: /opt/liaison/components/alloy-truststore/
+      imagePullSecrets:
+      - name: alloy-imagepullsecret
+      terminationGracePeriodSeconds: 60
+      volumes:
+      - name: alloy-datamanagement-dataquery-mapr-conf
+        secret:
+          secretName: alloy-common-file-mounts
+          defaultMode: 0404
+          items:
+          - key: ssl_truststore
+            path: ssl_truststore
+          - key: mapr-clusters.conf
+            path: mapr-clusters.conf
+      - name: alloy-datamanagement-dataquery-bdmp
+        secret:
+          secretName: alloy-common-file-mounts
+          defaultMode: 0404
+          items:
+            - key: symmetric-encrypt.key
+              path: symmetric-encrypt.key
+            - key: symmetric-encrypt.key
+              path: dev-int-symmetric.key
+            - key: symmetric-encrypt.key
+              path: stg-symmetric.key
+            - key: symmetric-encrypt.key
+              path: uat-symmetric.key
+            - key: symmetric-encrypt.key
+              path: prod-symmetric.key
+            - key: d2app-mapr-service-ticket
+              path: mapr/d2app-mapr-service-ticket
+            - key: star.liaison.jks
+              path: star.liaison.jks
+            - key: star.liaison.jks
+              path: star.liaison.dev.jks
+            - key: star.liaison.jks
+              path: star.liaison.prod.jks
+      - name: alloy-datamanagement-dataquery-truststore
+        secret:
+          secretName: alloy-common-file-mounts
+          defaultMode: 0644
+          items:
+          - key: cacerts
+            path: cacerts

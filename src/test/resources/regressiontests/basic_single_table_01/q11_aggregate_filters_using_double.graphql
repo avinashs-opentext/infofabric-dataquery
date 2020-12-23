@@ -1,0 +1,14 @@
+{
+    Person_aggregate (aggregate: COUNT
+    						filterset: {
+                            filtersets: [
+                            {filters: [
+                            	{ field: "Salary" op: EQ value: "9000.81" }
+                            ]
+                            }
+                            ]
+                            })
+        {
+            dq_aggregation_result
+        }
+}

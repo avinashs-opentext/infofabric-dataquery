@@ -1,0 +1,13 @@
+#QUERY_MODEL=SINGLE_QUERY
+{Employee_aggregate (
+    filterset: {
+        filters: [
+            { field: "dep_emp.name" op: EQ value: "Finance" },
+            { field: "dep_emp.name" op: EQ value: "Accounting" }
+        ],
+        op: OR
+    }
+    aggregate: COUNT
+)
+{ dep_emp { DepartmentId name } dq_aggregation_result }
+}

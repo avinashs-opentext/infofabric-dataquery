@@ -1,0 +1,6 @@
+query( $my_filters:_FilterSet! $my_limit:Int $my_skip:Int $my_sort:_Sort ){
+    Person_query(filterset: $my_filters limit: $my_limit skip: $my_skip sort: $my_sort)
+    {
+        Email
+    }
+}

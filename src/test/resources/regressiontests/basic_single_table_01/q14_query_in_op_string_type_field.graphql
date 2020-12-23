@@ -1,0 +1,19 @@
+{
+    Person_query(filterset: {filtersets:[
+        { filters:[
+            {field: "LastName" op: EQ value: "Smith"}
+            {field: "LastName" op: EQ value: "Doe"}
+        ]
+        op: OR }
+        { filters:[
+            {field: "FirstName" op: IN value: [ "John", "Robin" ]}
+        ]
+        }
+    ]
+    op: AND
+    }
+        skip: 0 limit: 100 sort: {field: "FirstName", direction: ASC})
+    {
+        FirstName LastName Address Email
+    }
+}

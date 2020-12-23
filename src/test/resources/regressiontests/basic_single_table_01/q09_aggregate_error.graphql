@@ -1,0 +1,7 @@
+{
+    Person_aggregate (aggregate: COUNT
+    sort: { field: "Address" })
+        {
+           Address
+        }
+}

@@ -1,0 +1,6 @@
+mutation {
+    Author1_upsert(input: [{authorId: 999 name: "John Smith" isAnyGood: true}]){
+        status
+        message
+    }
+}

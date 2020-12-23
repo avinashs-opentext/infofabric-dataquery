@@ -1,0 +1,45 @@
+/**
+ * Copyright 2018 Liaison Technologies, Inc.
+ * This software is the confidential and proprietary information of
+ * Liaison Technologies, Inc. ("Confidential Information").  You shall
+ * not disclose such Confidential Information and shall use it only in
+ * accordance with the terms of the license agreement you entered into
+ * with Liaison Technologies.
+ */
+{
+  "my_filters": {
+    "filtersets": [
+      {
+        "filters": [
+          {
+            "field": "LastName",
+            "op": "EQ",
+            "value": "Smith"
+          },
+          {
+            "field": "LastName",
+            "op": "EQ",
+            "value": "Doe"
+          }
+        ],
+        "op": "OR"
+      },
+      {
+        "filters": [
+          {
+            "field": "FirstName",
+            "op": "EQ",
+            "value": "Jane"
+          }
+        ]
+      }
+    ],
+    "op": "AND"
+  },
+  "my_skip": 0,
+  "my_limit": 100,
+  "my_sort": {
+    "field": "Email",
+    "direction": "ASC"
+  }
+}
