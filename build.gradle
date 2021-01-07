@@ -35,7 +35,7 @@ ext {
     codecVersion = '1.11'
     commonsCvsVersion = '1.5'
     curatorVersion = '4.0.1'
-    dropwizardVersion = '1.2.2'
+    dropwizardVersion = '2.0.15'
     functionalJavaVersion = '3.1'
     gsonVersion = '2.8.1'
     graphqlVersion = '9.2'
@@ -45,26 +45,21 @@ ext {
     log4jVersion = '2.3'
     pgVersion = '42.2.4'
     pgEmbeddedVersion = '0.12.1'
-    jacksonVersion = '2.9.5'
+    jacksonVersion = '2.10.0'
     logstashEncoderVersion = '4.9'
-    solutionDesignerMetaVersion = '0.2.2'
     sqlBuilderVersion = '2.1.7'
-    registrarVersion = '0.7.45'
     appStateVersion = '0.1.4'
-    alloyAuthSSOVersion = '2.1.8'
-    datamodelClientVersion = '0.0.2'
+    datamodelClientVersion = '0.0.4'
     IFABRIC_COMMON_VERSION = '0.1.6'
-    registrar_version = '0.1.4'
+    registrar_version = '0.1.7'
     slf4jVersion = '1.7.21'
-    maprVersion = '6.1.0-mapr'
-    hbaseVersion = '1.1.8-mapr-1703-m7-5.2.1'
     hbaseTestVersion = '1.1.8'
     swaggerVersion = '1.5.17'
     testngVersion = '6.14.3'
     mockitoVersion = '1.10.19'
-    kafkaMapRStreamsVersion = '1.1.1-mapr-streams-6.1.0'
     xercesImpl = '2.12.0'
     datastreamVersion = '2.3.95'
+    liaisonDataGateVersion = '0.0.18'
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -84,14 +79,7 @@ allprojects {
 
 configurations.all {
     resolutionStrategy {
-        force "io.netty:netty-all:$nettyVersion",
-                "com.fasterxml.jackson.core:jackson-core:$jacksonVersion",
-                "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
-                "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion",
-                "com.fasterxml.jackson.jaxrs:jackson-jaxrs-base:$jacksonVersion",
-                "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:$jacksonVersion",
-                "io.dropwizard:dropwizard-core:$dropwizardVersion",
-                "org.apache.zookeeper:zookeeper:$apacheZookeeperVersion"
+        force  "org.clojure:clojure:1.9.0"
     }
     resolutionStrategy.cacheChangingModulesFor 0, 'hours'
     all*.exclude group: 'org.zefer'
@@ -104,6 +92,8 @@ configurations.all {
     all*.exclude group: 'javax.inject', module: 'javax.inject'
     all*.exclude group: 'org.apache.logging.log4j', module: 'log4j-slf4j-impl'
     all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+    all*.exclude group: 'org.slf4j', module: 'log4j-over-slf4j'
+    all*.exclude group: 'com.sun.jersey'
 }
 
 task printVersion {
@@ -119,15 +109,23 @@ task printVersion {
 
 dependencies {
     // infofabric-common library
-    implementation group: 'com.opentext.infofabric', name: 'common-drop-wizard', version: "$IFABRIC_COMMON_VERSION"
+    implementation (group: 'com.opentext.infofabric', name: 'common-drop-wizard', version: "$IFABRIC_COMMON_VERSION") {
+        exclude group : "org.slf4j"
+        exclude group: "org.clojure", module: "clojure"
+    }
     implementation group: 'com.opentext.infofabric', name: 'registrar-clients', version: "$registrar_version"
-    implementation group: 'com.opentext.infofabric', name: 'datamodel-client', version: "$datamodelClientVersion"
+    implementation (group: 'com.opentext.infofabric', name: 'datamodel-client', version: "$datamodelClientVersion") {
+        exclude group : 'com.mapr.db' , module : 'maprdb'
+        exclude group : 'com.mapr.hadoop' , module : 'maprfs'
+        exclude group : 'org.apache.hbase' , module : 'hbase-client'
+        exclude group: 'slf4j-log4j12', module: 'org.slf4j'
+    }
 
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: "$log4jVersion"
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: "$log4jVersion"
 
     implementation(group: 'io.dropwizard', name: 'dropwizard-core', version: "$dropwizardVersion") {
-        exclude group: 'javax.inject', module: 'javax.inject'
+        exclude group: 'io.dropwizard.metrics', module: 'metrics-core'
     }
     implementation group: 'io.dropwizard', name: 'dropwizard-auth', version: "$dropwizardVersion"
     implementation group: 'io.dropwizard', name: 'dropwizard-client', version: "$dropwizardVersion"
@@ -153,8 +151,13 @@ dependencies {
     }
 
 //    implementation group: 'com.liaison.commons', name: 'lib_logging', version: "$liaisonLibLoggingVersion"
-//    implementation group: 'com.liaison', name: 'dm-datagate-rdbms', version: "$liaisonDataGateVersion"
+    implementation(group: 'com.liaison', name: 'dm-datagate-rdbms', version: "$liaisonDataGateVersion") {
+        exclude group: 'com.liaison', module: 'dm-datagate-fcl'
+    }
 
+    implementation group: 'io.trbl', name: 'jdbc-wrappers', version: "1.0"
+
+    implementation group: 'sqlingvo', name: 'sqlingvo', version: '0.9.3'
     implementation group: 'com.netflix.archaius', name: 'archaius-core', version: "$archaiusCoreVersion"
     implementation(group: 'io.swagger', name: 'swagger-jaxrs', version: "$swaggerVersion") {
         exclude(module: 'jackson-jaxrs-json-provider')
@@ -164,8 +167,6 @@ dependencies {
         exclude(module: 'commons-lang3')
         exclude(module: 'jsr311-api')
     }
-
-    implementation group: 'org.slf4j', name: 'slf4j-api', version: "$slf4jVersion"
 
     implementation group: 'xerces', name: 'xercesImpl', version: "$xercesImpl"
     implementation group: 'com.zaxxer', name: 'HikariCP', version: "$hikariCPVersion"
@@ -182,7 +183,12 @@ dependencies {
     implementation (group: 'com.opentext.infofabric', name: 'app-state-client', version: "$appStateVersion") {
         exclude group: 'com.sun.jersey', module: '*'
         exclude group: 'javax.servlet',  module: '*'
+        exclude group : 'org.slf4j', module: 'slf4j-api'
+        exclude group: 'org.clojure', module: 'clojure'
     }
+
+    implementation group: 'org.apache.hbase', name:'hbase-common', version: '1.1.8'
+    implementation group: 'org.apache.hbase', name:'hbase-client', version: '1.1.8'
 
     testImplementation group: 'io.dropwizard', name: 'dropwizard-testing', version: "$dropwizardVersion"
     testImplementation group: 'org.testng', name: 'testng', version: "$testngVersion"
@@ -205,7 +211,7 @@ dependencies {
 
 task stampCurrentVersion {
     doLast {
-        ant.copy(file: 'src/main/java/com/liaison/dataquery/Version.java.template', toFile: 'src/main/java/com/liaison/dataquery/Version.java', overwrite: true)
+        ant.copy(file: 'src/main/java/com/opentext/infofabric/dataquery/Version.java.template', toFile: 'src/main/java/com/opentext/infofabric/dataquery/Version.java', overwrite: true)
                 {
                     filterchain {
                         tokenfilter { replaceregex(pattern: 'VERSION_PLACEHOLDER', replace: "${project.version}") }
@@ -236,7 +242,7 @@ def getCheckedOutGitCommitHash() {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'com.liaison.dataquery.DataqueryApplication'
+        attributes 'Main-Class': 'com.opentext.infofabric.dataquery.DataqueryApplication'
     }
 }
 
@@ -249,7 +255,7 @@ test {
 }
 
 if (!hasProperty('mainClass')) {
-    ext.mainClass = 'com.liaison.dataquery.DataqueryApplication'
+    ext.mainClass = 'com.opentext.infofabric.dataquery.DataqueryApplication'
 }
 
 tasks.withType(JavaExec) {

@@ -5,49 +5,49 @@ server:
     requestLog:
       appenders: []
     applicationConnectors:
-        - type: https
+        - type: http
           port: 9443
-          idleTimeout: 300 seconds
-          keyStorePath: /opt/bdmp/secure/star.liaison.dev.jks
-          keyStorePassword: f80fccf987f073a59def5029eabf0ca1
-          validateCerts: false
-          supportedProtocols: ["TLSv1.2"]
-          supportedCipherSuites: [
-          "TLS_RSA_WITH_AES_256_CBC_SHA256",
-          "TLS_RSA_WITH_AES_256_CBC_SHA",
-          "TLS_RSA_WITH_AES_128_CBC_SHA256",
-          "TLS_RSA_WITH_AES_128_CBC_SHA"]
-          excludedCipherSuites:
-           - SSL_RSA_WITH_DES_CBC_SHA
-           - SSL_DHE_RSA_WITH_DES_CBC_SHA
-           - SSL_DHE_DSS_WITH_DES_CBC_SHA
-           - SSL_RSA_EXPORT_WITH_RC4_40_MD5
-           - SSL_RSA_EXPORT_WITH_DES40_CBC_SHA
-           - SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA
-           - SSL_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA
-    adminConnectors:
-        - type: https
-          port: 8077
-          idleTimeout: 300 seconds
-          keyStorePath: /opt/bdmp/secure/star.liaison.dev.jks
-          keyStorePassword: f80fccf987f073a59def5029eabf0ca1
-          validateCerts: false
-          supportedProtocols: ["TLSv1.2"]
-          supportedCipherSuites: [
-          "TLS_RSA_WITH_AES_256_CBC_SHA256",
-          "TLS_RSA_WITH_AES_256_CBC_SHA",
-          "TLS_RSA_WITH_AES_128_CBC_SHA256",
-          "TLS_RSA_WITH_AES_128_CBC_SHA"]
-          excludedCipherSuites:
-           - SSL_RSA_WITH_DES_CBC_SHA
-           - SSL_DHE_RSA_WITH_DES_CBC_SHA
-           - SSL_DHE_DSS_WITH_DES_CBC_SHA
-           - SSL_RSA_EXPORT_WITH_RC4_40_MD5
-           - SSL_RSA_EXPORT_WITH_DES40_CBC_SHA
-           - SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA
-           - SSL_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA
+#          idleTimeout: 300 seconds
+#          keyStorePath: /opt/bdmp/secure/star.liaison.dev.jks
+#          keyStorePassword: f80fccf987f073a59def5029eabf0ca1
+#          validateCerts: false
+#          supportedProtocols: ["TLSv1.2"]
+#          supportedCipherSuites: [
+#          "TLS_RSA_WITH_AES_256_CBC_SHA256",
+#          "TLS_RSA_WITH_AES_256_CBC_SHA",
+#          "TLS_RSA_WITH_AES_128_CBC_SHA256",
+#          "TLS_RSA_WITH_AES_128_CBC_SHA"]
+#          excludedCipherSuites:
+#           - SSL_RSA_WITH_DES_CBC_SHA
+#           - SSL_DHE_RSA_WITH_DES_CBC_SHA
+#           - SSL_DHE_DSS_WITH_DES_CBC_SHA
+#           - SSL_RSA_EXPORT_WITH_RC4_40_MD5
+#           - SSL_RSA_EXPORT_WITH_DES40_CBC_SHA
+#           - SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA
+#           - SSL_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA
+    adminConnectors: []
+#        - type: https
+#          port: 8077
+#          idleTimeout: 300 seconds
+##          keyStorePath: /opt/bdmp/secure/star.liaison.dev.jks
+##          keyStorePassword: f80fccf987f073a59def5029eabf0ca1
+#          validateCerts: false
+#          supportedProtocols: ["TLSv1.2"]
+#          supportedCipherSuites: [
+#          "TLS_RSA_WITH_AES_256_CBC_SHA256",
+#          "TLS_RSA_WITH_AES_256_CBC_SHA",
+#          "TLS_RSA_WITH_AES_128_CBC_SHA256",
+#          "TLS_RSA_WITH_AES_128_CBC_SHA"]
+#          excludedCipherSuites:
+#           - SSL_RSA_WITH_DES_CBC_SHA
+#           - SSL_DHE_RSA_WITH_DES_CBC_SHA
+#           - SSL_DHE_DSS_WITH_DES_CBC_SHA
+#           - SSL_RSA_EXPORT_WITH_RC4_40_MD5
+#           - SSL_RSA_EXPORT_WITH_DES40_CBC_SHA
+#           - SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA
+#           - SSL_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA
 
-symmetricKeyPath: /opt/bdmp/secure/dev-int-symmetric.key
+#symmetricKeyPath: /opt/bdmp/secure/dev-int-symmetric.key
 
 httpClient:
   timeout: 120000ms
@@ -73,7 +73,7 @@ httpRequestConfig:
 
 environment: AT4D
 
-enableSSO: true
+#enableSSO: true
 
 defaultQueryModel: SINGLE_QUERY
 
@@ -83,18 +83,20 @@ maxJoinFieldComplexity: 3
 
 datamodel:
   type: default
-  base-url: https://at4dh.liaison.dev/datamodel
-  user: datacast_svc_xm@liaison.dev
-  password: aa0f1b57d899b9d0e4b675f1fb873120
+#  base-url: https://at4dh.liaison.dev/datamodel
+  base-url: http://datamodel-dev.fulcrum.cfcr-lab.bp-paas.otxlab.net
+#  user: datacast_svc_xm@liaison.dev
+#  buid: buid-100
+#  password: aa0f1b57d899b9d0e4b675f1fb873120
 
 datacastUrl: https://at4dh.liaison.dev/datacast/1/datacast/
 
 dmServiceToken: aa0f1b57d899b9d0e4b675f1fb873120
 
-disableAdminContextAuth: false
+#disableAdminContextAuth: false
 
 rdbms:
-  url: jdbc:postgresql://at4d-lvpstsql01.liaison.dev:5432/
+  url: jdbc:postgresql://localhost:5432/
   user: d2app
   password: aa0f1b57d899b9d0e4b675f1fb873120
   databaseSuffix:
@@ -108,36 +110,36 @@ rdbms:
     ssl: true
     insecure: false
 
-ssoClient:
-  identityGatewayUrl: https://at4dh.liaison.dev/sso-gateway
-  cacheSize: 100
-  cacheTtl: 600 # seconds
-  clientId: alloy-microservice
-  clientSecret: 090ad66b629821239efe6c46ac2b5917
+#ssoClient:
+#  identityGatewayUrl: https://at4dh.liaison.dev/sso-gateway
+#  cacheSize: 100
+#  cacheTtl: 600 # seconds
+#  clientId: alloy-microservice
+#  clientSecret: 090ad66b629821239efe6c46ac2b5917
 
 ##MEM or MAPR or KAFKA
-streamImplementation: MAPR
+#streamImplementation: MAPR
 
 # To disable SSO authentication
 # ssoClient:
 #    mock: true
 
 ##Conflux admin client configuration
-maprAdminClientConfig:
-  servers: at4d-lpdbstor01.liaison.dev:8443,at4d-lpdbstor02.liaison.dev:8443,at4d-lpdbstor03.liaison.dev:8443
-  secure: true
-  user: d2app
-  pass: aa0f1b57d899b9d0e4b675f1fb873120
-  volumeBasePath: apps
-  ignoreSslValidation: true
-  fs.mapr.bailout.on.library.mismatch: false
-  timeout-cfg:
-    connection-timeout: 1500000
-    pool-timeout: 1500000
-    request-timeout: 1500000
-  pool-cfg:
-    connection-options:
-      insecure?: true
+#maprAdminClientConfig:
+#  servers: at4d-lpdbstor01.liaison.dev:8443,at4d-lpdbstor02.liaison.dev:8443,at4d-lpdbstor03.liaison.dev:8443
+#  secure: true
+#  user: d2app
+#  pass: aa0f1b57d899b9d0e4b675f1fb873120
+#  volumeBasePath: apps
+#  ignoreSslValidation: true
+#  fs.mapr.bailout.on.library.mismatch: false
+#  timeout-cfg:
+#    connection-timeout: 1500000
+#    pool-timeout: 1500000
+#    request-timeout: 1500000
+#  pool-cfg:
+#    connection-options:
+#      insecure?: true
 
 metricReporter:
     enabled: false
@@ -169,18 +171,13 @@ logging:
 #      Named Query configurations
 
 ##Conflux admin client configuration
-admin:
+adminConfig:
   #For Kafka
-  bootstrap.servers: ""
+  bootstrap.servers: localhost:9092
   interceptor.classes: "com.liaison.conflux.consumer.NoOpConsumerInterceptor"
   security.protocol: "PLAINTEXT"
-  #For Mapr
-  servers: at4d-lpdbstor03.liaison.dev:8443,at4d-lpdbstor02.liaison.dev:8443,at4d-lpdbstor01.liaison.dev:8443
-  secure: true
-  user: d2app
-  pass: aa0f1b57d899b9d0e4b675f1fb873120
   ignoreSslValidation: true
-  fs.mapr.bailout.on.library.mismatch: false
+  volumeBasePath: apps
   timeout-cfg:
     connection-timeout: 1500000
     pool-timeout: 1500000
@@ -194,11 +191,11 @@ datastream:
   hosts: at4d-vpdmds.liaison.dev:443
   tls: true
   insecure: false
-  symmetricKeyPath: /opt/bdmp/secure/dev-int-symmetric.key
+#  symmetricKeyPath: /opt/bdmp/secure/dev-int-symmetric.key
   socketTimeout: 30000
-  streamImplementation: MAPR
+#  streamImplementation: MAPR
   streamPath:
-    MAPR: /apps/dev/datamgt/%s/datastream/streams/_default:request-%s
+#    MAPR: /apps/dev/datamgt/%s/datastream/streams/_default:request-%s
     KAFKA: datamgt.dev.%s.datastream.%s
 
 appState:
@@ -206,34 +203,18 @@ appState:
     name: dataquery
   stream:
     #For Kafka
-    bootstrap.servers: ""
-    #For Mapr
-    servers: at4d-lpdbstor03.liaison.dev:8443,at4d-lpdbstor02.liaison.dev:8443,at4d-lpdbstor01.liaison.dev:8443
-    secure: true
-    user: d2app
-    password: aa0f1b57d899b9d0e4b675f1fb873120
+    bootstrap.servers: localhost:9092
+    security.protocol: "PLAINTEXT"
     streamPath:
-      MAPR: /apps/dev/appstate/streams/%s:%s_%s
       KAFKA: datamgt.dev.appstate.%s.%s-%s
     consumer_groupid_suffix: dataquery
   storage:
-    hosts: at4d-lvdbara47.liaison.dev:8529
-    useSSL: true
+    hosts: localhost:8529
+    useSSL: false
     user: d2app
-    password: aa0f1b57d899b9d0e4b675f1fb873120
-
-kafkaAdminClient:
-  bootstrap.servers: ""
-  interceptor.classes: "com.liaison.conflux.consumer.NoOpConsumerInterceptor"
-  security.protocol: "PLAINTEXT"
+    password: d+mdvWiUGQVFTm5HBXjN5JUGBDQspQNd9/LjHjqTPmeKC3umM+jOLjo=
 
 registrarClient:
-  MEM:
-    streams-type: "memka"
-  MAPR:
-    streams-type: "MAPR"
-  KAFKA:
-    streams-type: "KAFKA"
-    bootstrap.servers: ""
-    security.protocol: "PLAINTEXT"
+  bootstrap.servers: localhost:9092
+  security.protocol: "PLAINTEXT"
 

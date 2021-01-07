@@ -106,7 +106,7 @@ then
     -Djavax.net.ssl.trustStoreType=JKS"
 fi
 
-MAINCLASS="com.liaison.dataquery.DataqueryApplication";
+MAINCLASS="DataqueryApplication";
 MAINARGS="server ${PATH_CONFIG}";
 
 # Force zookeeper not to use sasl client, as it would otherwise use it if java.security.auth.login.config is set
