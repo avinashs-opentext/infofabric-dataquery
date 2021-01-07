@@ -31,7 +31,6 @@ public class DataQueryServlet {
     private static final Logger log = LoggerFactory.getLogger(DataQueryServlet.class);
     protected final DataqueryConfiguration config;
     protected static Gson json = new GsonBuilder().serializeNulls().create();
-//    private final static Charset responseCharset = Charset.forName("UTF-8");
 
     @Inject
     private static ResponseCache cache;
@@ -40,7 +39,6 @@ public class DataQueryServlet {
      * Default Constructor
      */
     public DataQueryServlet() {
-        super();
         this.config = GuiceInjector.getInjector().getInstance(DataqueryConfiguration.class);
     }
 
@@ -51,33 +49,6 @@ public class DataQueryServlet {
     protected Response response(Object obj, int status) {
         return Response.ok(obj).status(status).build();
     }
-
-//    protected void response(HttpServletResponse resp, Object obj) {
-//        response(resp, obj, HttpServletResponse.SC_OK);
-//    }
-//
-//    protected void response(HttpServletResponse resp, Object obj, int status) {
-//        response(null, resp, obj, status);
-//    }
-//
-//    protected void response(DataqueryRequestWrapper request, HttpServletResponse resp, Object obj, int status) {
-//        byte[] bytes = json.toJson(obj).getBytes(responseCharset);
-//        if (request != null && request.writeToCache()) {
-//            cache.put(request.getCacheMapKey(), request.getCacheResultKey(), bytes);
-//        }
-//        try {
-//            resp.getOutputStream().write(bytes);
-//            resp.setStatus(status);
-//        } catch (IOException e) {
-//            log.error("Error writing response.", e);
-//            resp.setStatus(500);
-//        }
-//    }
-//
-//    protected void response(HttpServletResponse resp, String sdl) throws IOException {
-//        resp.getOutputStream().write(sdl.getBytes(responseCharset));
-//        resp.setStatus(HttpServletResponse.SC_OK);
-//    }
 
     public static Map<String, CacheStats> getCacheStats() {
         if (cache == null) {

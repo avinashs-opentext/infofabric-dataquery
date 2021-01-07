@@ -22,48 +22,43 @@ plugins {
 apply plugin: 'com.liaison.gradle-xunit-results-consolidator'
 
 
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
 group 'com.opentext.infofabric'
 
 
 ext {
     prometheusVersion = '0.5.0'
-    akkaVersion = '2.4.0'
-    apacheCommonsIoVersion = '2.4'
-    apacheCommonsLangVersion = '2.6'
-    apacheZookeeperVersion = '3.4.11'
-    archaiusCoreVersion = '0.5.4'
-    codecVersion = '1.11'
-    commonsCvsVersion = '1.5'
-    curatorVersion = '4.0.1'
+    archaiusCoreVersion = '0.7.6'
+    codecVersion = '1.15'
+    commonsCsvVersion = '1.8'
     dropwizardVersion = '2.0.15'
-    functionalJavaVersion = '3.1'
-    gsonVersion = '2.8.1'
+    gsonVersion = '2.8.6'
     graphqlVersion = '9.2'
-    guiceVersion = '4.2.0'
-    hikariCPVersion = '2.7.4'
-    nettyVersion = '4.1.25.Final'
-    log4jVersion = '2.3'
-    pgVersion = '42.2.4'
-    pgEmbeddedVersion = '0.12.1'
+    hikariCPVersion = '3.4.5'
+    log4jVersion = '2.14.0'
+    pgVersion = '42.2.18'
+    pgEmbeddedVersion = '0.13.3'
     jacksonVersion = '2.10.0'
-    logstashEncoderVersion = '4.9'
-    sqlBuilderVersion = '2.1.7'
-    appStateVersion = '0.1.4'
-    datamodelClientVersion = '0.0.4'
-    IFABRIC_COMMON_VERSION = '0.1.6'
-    registrar_version = '0.1.7'
-    slf4jVersion = '1.7.21'
+    logstashEncoderVersion = '6.6'
+    sqlBuilderVersion = '3.0.1'
     hbaseTestVersion = '1.1.8'
     swaggerVersion = '1.5.17'
     testngVersion = '6.14.3'
     mockitoVersion = '1.10.19'
     xercesImpl = '2.12.0'
-    datastreamVersion = '2.3.95'
+    hbaseVersion = '1.1.8'
+
+    appStateVersion = '0.1.4'
+    datamodelClientVersion = '0.0.4'
+    IFABRIC_COMMON_VERSION = '0.1.6'
+    registrar_version = '0.1.7'
     liaisonDataGateVersion = '0.0.18'
+
+
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
 
 allprojects {
     repositories {
@@ -96,19 +91,8 @@ configurations.all {
     all*.exclude group: 'com.sun.jersey'
 }
 
-task printVersion {
-    file("${rootDir}/CHANGELOG.md").eachLine { line ->
-        def matcher = line =~ /##.*\[(\d+\.\d+\.\d+)\].*/
-
-        if (matcher.matches() && project.version == "unspecified") {
-            project.version = matcher[0][1]
-        }
-    }
-    println project.version
-}
-
 dependencies {
-    // infofabric-common library
+    // infofabric
     implementation (group: 'com.opentext.infofabric', name: 'common-drop-wizard', version: "$IFABRIC_COMMON_VERSION") {
         exclude group : "org.slf4j"
         exclude group: "org.clojure", module: "clojure"
@@ -120,10 +104,43 @@ dependencies {
         exclude group : 'org.apache.hbase' , module : 'hbase-client'
         exclude group: 'slf4j-log4j12', module: 'org.slf4j'
     }
+    implementation (group: 'com.opentext.infofabric', name: 'app-state-client', version: "$appStateVersion") {
+        exclude group: 'com.sun.jersey', module: '*'
+        exclude group: 'javax.servlet',  module: '*'
+        exclude group : 'org.slf4j', module: 'slf4j-api'
+        exclude group: 'org.clojure', module: 'clojure'
+    }
 
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: "$log4jVersion"
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: "$log4jVersion"
+    // liaison
+    implementation(group: 'com.liaison', name: 'dm-datagate-rdbms', version: "$liaisonDataGateVersion") {
+        exclude group: 'com.liaison', module: 'dm-datagate-fcl'
+    }
 
+    // sql
+    implementation group: 'com.zaxxer', name: 'HikariCP', version: "$hikariCPVersion"
+    implementation group: 'io.trbl', name: 'jdbc-wrappers', version: "1.0"
+    implementation "org.postgresql:postgresql:$pgVersion"
+    implementation group: 'com.graphql-java', name: 'graphql-java', version: "$graphqlVersion"
+    implementation group: 'sqlingvo', name: 'sqlingvo', version: '0.9.3'
+    implementation group: 'com.healthmarketscience.sqlbuilder', name: 'sqlbuilder', version: "$sqlBuilderVersion"
+
+    //util
+    implementation group: 'com.google.code.gson', name: 'gson', version: "$gsonVersion"
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: "$jacksonVersion"
+    implementation(group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: "$jacksonVersion") {
+        exclude group: 'slf4j-log4j12', module: 'org.slf4j'
+        exclude group: 'log4j-over-slf4j', module: 'org.slf4j'
+    }
+    implementation group: 'commons-codec', name: 'commons-codec', version: "$codecVersion"
+    implementation group: 'com.netflix.archaius', name: 'archaius-core', version: "$archaiusCoreVersion"
+    implementation group: 'xerces', name: 'xercesImpl', version: "$xercesImpl"
+    implementation group: 'com.google.inject.extensions', name: 'guice-assistedinject', version: '3.0'
+
+    //hbase
+    implementation group: 'org.apache.hbase', name:'hbase-common', version: "$hbaseVersion"
+    implementation group: 'org.apache.hbase', name:'hbase-client', version: "$hbaseVersion"
+
+    //dropwizard
     implementation(group: 'io.dropwizard', name: 'dropwizard-core', version: "$dropwizardVersion") {
         exclude group: 'io.dropwizard.metrics', module: 'metrics-core'
     }
@@ -131,34 +148,25 @@ dependencies {
     implementation group: 'io.dropwizard', name: 'dropwizard-client', version: "$dropwizardVersion"
     implementation group: 'io.dropwizard', name: 'dropwizard-assets', version: "$dropwizardVersion"
     implementation group: 'io.dropwizard', name: 'dropwizard-metrics-graphite', version: "$dropwizardVersion"
-    implementation group: 'com.google.code.gson', name: 'gson', version: "$gsonVersion"
-    implementation group: 'com.healthmarketscience.sqlbuilder', name: 'sqlbuilder', version: "$sqlBuilderVersion"
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: "$jacksonVersion"
-    implementation(group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: "$jacksonVersion") {
-        exclude group: 'slf4j-log4j12', module: 'org.slf4j'
-        exclude group: 'log4j-over-slf4j', module: 'org.slf4j'
-    }
 
-    implementation "org.postgresql:postgresql:$pgVersion"
-    implementation group: 'com.graphql-java', name: 'graphql-java', version: "$graphqlVersion"
-    implementation group: 'com.google.inject', name: 'guice', version: "$guiceVersion"
-    implementation group: 'commons-codec', name: 'commons-codec', version: "$codecVersion"
-
-
+    //logging
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: "$log4jVersion"
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: "$log4jVersion"
     implementation(group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: "$logstashEncoderVersion") {
         exclude group: 'slf4j-log4j12', module: 'org.slf4j'
         exclude group: 'log4j-over-slf4j', module: 'org.slf4j'
     }
 
-//    implementation group: 'com.liaison.commons', name: 'lib_logging', version: "$liaisonLibLoggingVersion"
-    implementation(group: 'com.liaison', name: 'dm-datagate-rdbms', version: "$liaisonDataGateVersion") {
-        exclude group: 'com.liaison', module: 'dm-datagate-fcl'
-    }
+    //prometheus
+    implementation group: 'io.prometheus', name: 'simpleclient', version: "$prometheusVersion"
+    implementation group: 'io.prometheus', name: 'simpleclient_hotspot', version: "$prometheusVersion"
+    implementation group: 'io.prometheus', name: 'simpleclient_httpserver', version: "$prometheusVersion"
+    implementation group: 'io.prometheus', name: 'simpleclient_pushgateway', version: "$prometheusVersion"
+    implementation group: 'io.prometheus', name: 'simpleclient_dropwizard', version: "$prometheusVersion"
+    implementation group: 'io.prometheus', name: 'simpleclient_common', version: "$prometheusVersion"
+    implementation group: 'io.prometheus', name: 'simpleclient_servlet', version: "$prometheusVersion"
 
-    implementation group: 'io.trbl', name: 'jdbc-wrappers', version: "1.0"
-
-    implementation group: 'sqlingvo', name: 'sqlingvo', version: '0.9.3'
-    implementation group: 'com.netflix.archaius', name: 'archaius-core', version: "$archaiusCoreVersion"
+     //swagger
     implementation(group: 'io.swagger', name: 'swagger-jaxrs', version: "$swaggerVersion") {
         exclude(module: 'jackson-jaxrs-json-provider')
         exclude(module: 'jackson-core')
@@ -168,31 +176,9 @@ dependencies {
         exclude(module: 'jsr311-api')
     }
 
-    implementation group: 'xerces', name: 'xercesImpl', version: "$xercesImpl"
-    implementation group: 'com.zaxxer', name: 'HikariCP', version: "$hikariCPVersion"
-    implementation group: 'io.prometheus', name: 'simpleclient', version: "$prometheusVersion"
-    implementation group: 'io.prometheus', name: 'simpleclient_hotspot', version: "$prometheusVersion"
-    implementation group: 'io.prometheus', name: 'simpleclient_httpserver', version: "$prometheusVersion"
-    implementation group: 'io.prometheus', name: 'simpleclient_pushgateway', version: "$prometheusVersion"
-    implementation group: 'io.prometheus', name: 'simpleclient_dropwizard', version: "$prometheusVersion"
-    implementation group: 'io.prometheus', name: 'simpleclient_common', version: "$prometheusVersion"
-    implementation group: 'io.prometheus', name: 'simpleclient_servlet', version: "$prometheusVersion"
-
-    implementation group: 'com.google.inject.extensions', name: 'guice-assistedinject', version: '3.0'
-
-    implementation (group: 'com.opentext.infofabric', name: 'app-state-client', version: "$appStateVersion") {
-        exclude group: 'com.sun.jersey', module: '*'
-        exclude group: 'javax.servlet',  module: '*'
-        exclude group : 'org.slf4j', module: 'slf4j-api'
-        exclude group: 'org.clojure', module: 'clojure'
-    }
-
-    implementation group: 'org.apache.hbase', name:'hbase-common', version: '1.1.8'
-    implementation group: 'org.apache.hbase', name:'hbase-client', version: '1.1.8'
-
     testImplementation group: 'io.dropwizard', name: 'dropwizard-testing', version: "$dropwizardVersion"
     testImplementation group: 'org.testng', name: 'testng', version: "$testngVersion"
-    testImplementation group: 'org.apache.commons', name: 'commons-csv', version: "$commonsCvsVersion"
+    testImplementation group: 'org.apache.commons', name: 'commons-csv', version: "$commonsCsvVersion"
     testImplementation(group: 'org.apache.hbase', name: 'hbase-testing-util', version: "$hbaseTestVersion") {
         exclude group: 'com.sun.jersey', module: 'jersey-client'
         exclude group: 'com.sun.jersey', module: 'jersey-core'
@@ -206,7 +192,17 @@ dependencies {
     testImplementation group: 'com.opentable.components', name: 'otj-pg-embedded', version: "$pgEmbeddedVersion"
     testImplementation group: 'org.mockito', name: 'mockito-all', version: "$mockitoVersion"
 
+}
 
+task printVersion {
+    file("${rootDir}/CHANGELOG.md").eachLine { line ->
+        def matcher = line =~ /##.*\[(\d+\.\d+\.\d+)\].*/
+
+        if (matcher.matches() && project.version == "unspecified") {
+            project.version = matcher[0][1]
+        }
+    }
+    println project.version
 }
 
 task stampCurrentVersion {
@@ -301,6 +297,5 @@ resultSetsToConsolidate {
 
 apply from: file('gradle/convention.gradle')
 apply from: file('gradle/sonar.gradle')
-//apply from: file('gradle/check.gradle')
 apply from: file('gradle/distribution.gradle')
 apply from: file('gradle/maven.gradle')
