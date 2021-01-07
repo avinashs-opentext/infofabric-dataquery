@@ -10,6 +10,7 @@ package com.opentext.infofabric.dataquery.regression.core;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.liaison.dataquery.security.ServletFilter;
 import com.opentext.infofabric.dataquery.DataqueryConfiguration;
 import com.opentext.infofabric.dataquery.dto.DataqueryRequest;
 import com.opentext.infofabric.dataquery.dto.DmFilter;
@@ -19,7 +20,6 @@ import com.opentext.infofabric.dataquery.dto.DmPrivileges;
 import com.opentext.infofabric.dataquery.dto.DmRowPermission;
 import com.opentext.infofabric.dataquery.graphql.RootDataAccess;
 import com.opentext.infofabric.dataquery.regression.mock.MockRestAuthorizer;
-import com.liaison.dataquery.security.ServletFilter;
 import com.opentext.infofabric.dataquery.util.AppStateService;
 import com.opentext.infofabric.dataquery.util.CustomizedObjectTypeAdapter;
 import io.dropwizard.client.JerseyClientBuilder;

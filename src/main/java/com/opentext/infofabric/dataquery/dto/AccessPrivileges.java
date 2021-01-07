@@ -9,8 +9,8 @@
 package com.opentext.infofabric.dataquery.dto;
 
 import com.google.common.collect.Sets;
-import com.opentext.infofabric.dataquery.graphql.query.FilterSet;
 import com.opentext.infofabric.dataquery.DataqueryConstants;
+import com.opentext.infofabric.dataquery.graphql.query.FilterSet;
 
 import java.util.Map;
 import java.util.Set;

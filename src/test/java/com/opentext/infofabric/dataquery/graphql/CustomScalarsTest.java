@@ -10,17 +10,16 @@ package com.opentext.infofabric.dataquery.graphql;
 
 import graphql.language.StringValue;
 import graphql.schema.Coercing;
-
-import java.sql.Timestamp;
-import java.time.LocalTime;
-import java.util.Base64;
-import java.util.Date;
-
 import graphql.schema.CoercingParseLiteralException;
 import graphql.schema.CoercingParseValueException;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import java.sql.Timestamp;
+import java.time.LocalTime;
+import java.util.Base64;
+import java.util.Date;
 
 public class CustomScalarsTest {
     public static final String DATE_STRING = "2018-08-08T08:08:08.888Z";

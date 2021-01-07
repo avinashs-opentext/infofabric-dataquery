@@ -11,7 +11,10 @@ package com.opentext.infofabric.dataquery;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.opentext.infofabric.dataquery.cache.ResponseCacheFilter;
+import com.opentext.infofabric.common.crypto.IFabricCryptoService;
+import com.opentext.infofabric.common.dropwizard.security.IFabricAuthenticator;
+import com.opentext.infofabric.common.dropwizard.security.IFabricAuthorizer;
+import com.opentext.infofabric.common.dropwizard.security.IFabricJwtFilter;
 import com.opentext.infofabric.dataquery.endpoints.DataqueryHealthCheckServlet;
 import com.opentext.infofabric.dataquery.endpoints.GraphQLServlet;
 import com.opentext.infofabric.dataquery.endpoints.NamedQueryServlet;
@@ -27,10 +30,6 @@ import com.opentext.infofabric.dataquery.services.NamedQueryConnectionFactory;
 import com.opentext.infofabric.dataquery.services.NamedQueryConnectionProvider;
 import com.opentext.infofabric.dataquery.util.AppStateService;
 import com.opentext.infofabric.dataquery.util.RegistrarInitializer;
-import com.opentext.infofabric.common.crypto.IFabricCryptoService;
-import com.opentext.infofabric.common.dropwizard.security.IFabricAuthenticator;
-import com.opentext.infofabric.common.dropwizard.security.IFabricAuthorizer;
-import com.opentext.infofabric.common.dropwizard.security.IFabricJwtFilter;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.auth.AuthDynamicFeature;
@@ -54,8 +53,6 @@ import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.DispatcherType;
-import java.util.EnumSet;
 import java.util.stream.Stream;
 
 /**
@@ -95,8 +92,7 @@ public class DataqueryApplication extends Application<DataqueryConfiguration> {
     }
 
     @Override
-    public void run(final DataqueryConfiguration dataqueryConfiguration, final Environment environment)
-            throws Exception {
+    public void run(final DataqueryConfiguration dataqueryConfiguration, final Environment environment) {
         setSystemProperties();
         MetricReporter.initReporter(dataqueryConfiguration, environment);
 
@@ -112,17 +108,6 @@ public class DataqueryApplication extends Application<DataqueryConfiguration> {
 
         AppStateService.callConsumerRequest();
         AppStateService.buildDMPermissionCache();
-//        environment.jersey().register(injector.getInstance(AuthenticateResource.class));
-//        environment.jersey().register(injector.getInstance(AdminLoginService.class));
-
-//        // Authentication filters
-//        RestAuthFilter restAuthFilter = new RestAuthFilter.Builder<UserInfo>()
-//                .setAuthenticator(injector.getInstance(RestAuthenticator.class))
-//                .setAuthorizer(injector.getInstance(RestAuthorizer.class)).buildAuthFilter();
-//        restAuthFilter.setEnableSSO(dataqueryConfiguration.isEnableSSO());
-//        environment.jersey().register(new AuthDynamicFeature(restAuthFilter));
-//        environment.jersey().register(new AuthValueFactoryProvider.Binder<>(UserInfo.class));
-//        environment.jersey().register(RolesAllowedDynamicFeature.class);
 
         // Health Check
         environment.healthChecks().register(APP_NAME, new DataqueryHealthCheck());
@@ -138,10 +123,6 @@ public class DataqueryApplication extends Application<DataqueryConfiguration> {
         environment.jersey().register(RolesAllowedDynamicFeature.class);
 
         injector.getInstance(RegistrarInitializer.class).initialize();
-
-        // Admin context security handler
-//        environment.getAdminContext().setSecurityHandler(injector.getInstance(AdminConstraintSecurityHandler.class));
-
 
         // Swagger
         environment.jersey().register(new ApiListingResource());
@@ -167,22 +148,6 @@ public class DataqueryApplication extends Application<DataqueryConfiguration> {
                 .addServlet("prometheusMetrics", new MetricsServlet())
                 .addMapping("/metrics");
         DefaultExports.initialize();
-
-//        DataqueryUtils.addZooKeeperInfo(dataqueryConfiguration);
-//        logger.info("Zooker quorum {}", dataqueryConfiguration.getLoadBalancerConfig().get("quorum"));
-//        logger.info("Zooker Port {}", dataqueryConfiguration.getLoadBalancerConfig().get("clientPort"));
-
-        // Add Query Servlet
-//        environment.servlets().addServlet(RAWQUERY_SERVLET, injector.getInstance(RawQueryServlet.class))
-//                .addMapping(DataqueryConstants.API_ROOT + "query/raw/*");
-
-        // Add  GraphQLServlet
-//        environment.servlets().addServlet(GRAPHQL_SERVLET, injector.getInstance(GraphQLServlet.class))
-//                .addMapping(DataqueryConstants.API_ROOT + "query/graphql/*");
-
-        // Add  NamedQueryServlet
-//        environment.servlets().addServlet(NAMEDQUERY_SERVLET, injector.getInstance(NamedQueryServlet.class))
-//                .addMapping(DataqueryConstants.API_ROOT + "query/named/*");
 
 //        environment.servlets().addFilter("ServletFilter", ServletFilter.class)
 //                .addMappingForServletNames(EnumSet.of(DispatcherType.REQUEST), false, RAWQUERY_SERVLET, GRAPHQL_SERVLET, NAMEDQUERY_SERVLET);
@@ -212,17 +177,15 @@ public class DataqueryApplication extends Application<DataqueryConfiguration> {
     }
 
     private void configureHttpsConnector(final DataqueryConfiguration conf) {
-//        if (conf.getSymmetricKeyPath() != null && !conf.getSymmetricKeyPath().isEmpty()) {
-            DefaultServerFactory serverFactory = (DefaultServerFactory) conf.getServerFactory();
-            Stream.concat(serverFactory.getApplicationConnectors().stream(),
-                    serverFactory.getAdminConnectors().stream())
-                    .filter(connector -> connector.getClass().equals(HttpsConnectorFactory.class))
-                    .forEach(connector -> {
-                        final HttpsConnectorFactory httpsConnectorFactory = (HttpsConnectorFactory) connector;
-                        if (httpsConnectorFactory.getKeyStorePassword() != null) {
-                            httpsConnectorFactory.setKeyStorePassword(cryptoService.getDecryptedData( httpsConnectorFactory.getKeyStorePassword()));
-                        }
-                    });
-//        }
+        DefaultServerFactory serverFactory = (DefaultServerFactory) conf.getServerFactory();
+        Stream.concat(serverFactory.getApplicationConnectors().stream(),
+                serverFactory.getAdminConnectors().stream())
+                .filter(connector -> connector.getClass().equals(HttpsConnectorFactory.class))
+                .forEach(connector -> {
+                    final HttpsConnectorFactory httpsConnectorFactory = (HttpsConnectorFactory) connector;
+                    if (httpsConnectorFactory.getKeyStorePassword() != null) {
+                        httpsConnectorFactory.setKeyStorePassword(cryptoService.getDecryptedData( httpsConnectorFactory.getKeyStorePassword()));
+                    }
+                });
     }
 }

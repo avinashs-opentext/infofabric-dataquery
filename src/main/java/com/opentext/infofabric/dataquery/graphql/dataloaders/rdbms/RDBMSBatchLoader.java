@@ -9,6 +9,7 @@
 package com.opentext.infofabric.dataquery.graphql.dataloaders.rdbms;
 
 import com.liaison.datagate.rdbms.sql.MVPreparedStatement;
+import com.opentext.infofabric.dataquery.DataqueryConstants;
 import com.opentext.infofabric.dataquery.exception.DataLoaderException;
 import com.opentext.infofabric.dataquery.exception.DataqueryRuntimeException;
 import com.opentext.infofabric.dataquery.graphql.dataloaders.DataQueryBatchLoader;
@@ -17,13 +18,15 @@ import com.opentext.infofabric.dataquery.graphql.query.FilterSet;
 import com.opentext.infofabric.dataquery.graphql.query.Query;
 import com.opentext.infofabric.dataquery.graphql.results.ResultList;
 import com.opentext.infofabric.dataquery.graphql.results.ResultObject;
-import com.opentext.infofabric.dataquery.DataqueryConstants;
 import io.prometheus.client.Histogram;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;

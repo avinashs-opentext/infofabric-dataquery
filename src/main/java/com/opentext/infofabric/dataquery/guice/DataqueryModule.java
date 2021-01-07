@@ -8,18 +8,21 @@
  */
 package com.opentext.infofabric.dataquery.guice;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Map;
-
 import com.google.common.collect.ImmutableMap;
-import com.opentext.infofabric.dataquery.util.ResultSetStreamUtil;
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
 import com.opentext.infofabric.appstate.client.AppStateClient;
 import com.opentext.infofabric.appstate.client.AppStateClientBuilder;
 import com.opentext.infofabric.common.crypto.IFabricCryptoService;
 import com.opentext.infofabric.datamodel.ModelClient;
 import com.opentext.infofabric.dataquery.DataqueryConfiguration;
+import com.opentext.infofabric.dataquery.DataqueryConstants;
+import com.opentext.infofabric.dataquery.NamedQueryConfiguration;
+import com.opentext.infofabric.dataquery.cache.ResponseCache;
 import com.opentext.infofabric.dataquery.cache.ResponseCacheFilter;
+import com.opentext.infofabric.dataquery.endpoints.DataQueryServlet;
+import com.opentext.infofabric.dataquery.graphql.GraphQLService;
 import com.opentext.infofabric.dataquery.graphql.RootDataAccess;
 import com.opentext.infofabric.dataquery.graphql.RootDataMutator;
 import com.opentext.infofabric.dataquery.graphql.dataloaders.hbase.HBaseConnection;
@@ -29,32 +32,6 @@ import com.opentext.infofabric.dataquery.graphql.dataloaders.rdbms.RDBMSConnecti
 import com.opentext.infofabric.dataquery.graphql.mutation.DatacastTransactionServiceImpl;
 import com.opentext.infofabric.dataquery.graphql.mutation.TransactionService;
 import com.opentext.infofabric.dataquery.mock.MockModelClient;
-import com.opentext.infofabric.registrar.client.RegistrarClient;
-import com.opentext.infofabric.registrar.stream.IFabricKafkaAdminClient;
-import com.opentext.infofabric.registrar.stream.StreamProducer;
-import com.opentext.infofabric.registrar.types.ApplicationInfo;
-import com.opentext.infofabric.registrar.types.HostAndPort;
-import io.dropwizard.jetty.ConnectorFactory;
-import io.dropwizard.jetty.HttpConnectorFactory;
-import io.dropwizard.server.DefaultServerFactory;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.kafka.clients.producer.ProducerConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
-//import com.liaison.datagate.fcl.security.DataGateSecurity;
-//import com.liaison.datagate.fcl.security.DataGateSecurityBuilder;
-//import com.liaison.datagate.rdbms.fcl.RDBMSControl;
-import com.opentext.infofabric.dataquery.DataqueryConstants;
-import com.opentext.infofabric.dataquery.NamedQueryConfiguration;
-import com.opentext.infofabric.dataquery.cache.ResponseCache;
-import com.opentext.infofabric.dataquery.endpoints.DataQueryServlet;
-import com.opentext.infofabric.dataquery.graphql.GraphQLService;
 import com.opentext.infofabric.dataquery.services.ModelService;
 import com.opentext.infofabric.dataquery.services.NamedQueryConnectionProvider;
 import com.opentext.infofabric.dataquery.services.NamedQueryExecutorService;
@@ -63,8 +40,31 @@ import com.opentext.infofabric.dataquery.services.impl.ModelServiceImpl;
 import com.opentext.infofabric.dataquery.services.impl.NamedQueryConnectionProviderImpl;
 import com.opentext.infofabric.dataquery.services.impl.NamedQueryExecutorServiceImpl;
 import com.opentext.infofabric.dataquery.services.impl.NamedQueryServiceImpl;
+import com.opentext.infofabric.dataquery.util.ResultSetStreamUtil;
+import com.opentext.infofabric.registrar.client.RegistrarClient;
+import com.opentext.infofabric.registrar.stream.IFabricKafkaAdminClient;
+import com.opentext.infofabric.registrar.stream.StreamProducer;
+import com.opentext.infofabric.registrar.types.ApplicationInfo;
+import com.opentext.infofabric.registrar.types.HostAndPort;
 import io.dropwizard.client.HttpClientBuilder;
+import io.dropwizard.jetty.ConnectorFactory;
+import io.dropwizard.jetty.HttpConnectorFactory;
+import io.dropwizard.server.DefaultServerFactory;
 import io.dropwizard.setup.Environment;
+import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Map;
+
+//import com.liaison.datagate.fcl.security.DataGateSecurity;
+//import com.liaison.datagate.fcl.security.DataGateSecurityBuilder;
+//import com.liaison.datagate.rdbms.fcl.RDBMSControl;
 
 public class DataqueryModule extends AbstractModule {
 

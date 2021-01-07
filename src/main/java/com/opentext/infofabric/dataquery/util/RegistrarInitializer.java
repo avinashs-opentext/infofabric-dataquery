@@ -11,7 +11,6 @@ package com.opentext.infofabric.dataquery.util;
 import com.google.inject.Inject;
 import com.opentext.infofabric.dataquery.DataqueryApplication;
 import com.opentext.infofabric.dataquery.DataqueryConfiguration;
-//import com.opentext.infofabric.registrar.Registrar;
 import com.opentext.infofabric.registrar.types.ApplicationInfo;
 import com.opentext.infofabric.registrar.types.HostAndPort;
 import io.dropwizard.jetty.ConnectorFactory;
@@ -22,6 +21,8 @@ import org.slf4j.LoggerFactory;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+
+//import com.opentext.infofabric.registrar.Registrar;
 
 public class RegistrarInitializer {
     private static final Logger log = LoggerFactory.getLogger(RegistrarInitializer.class);

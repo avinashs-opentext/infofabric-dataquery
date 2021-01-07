@@ -9,17 +9,21 @@
 package com.opentext.infofabric.dataquery.endpoints;
 
 import com.opentext.infofabric.dataquery.DataqueryConstants;
-import com.opentext.infofabric.dataquery.guice.GuiceInjector;
 import com.opentext.infofabric.dataquery.dto.NamedQueryApiResponse;
 import com.opentext.infofabric.dataquery.dto.NamedQueryRequest;
 import com.opentext.infofabric.dataquery.dto.NamedQueryResponse;
 import com.opentext.infofabric.dataquery.exception.NamedQueryRuntimeException;
+import com.opentext.infofabric.dataquery.guice.GuiceInjector;
 import com.opentext.infofabric.dataquery.services.NamedQueryExecutorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;

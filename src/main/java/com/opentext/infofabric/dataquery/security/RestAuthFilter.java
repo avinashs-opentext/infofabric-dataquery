@@ -8,9 +8,12 @@
  */
 package com.opentext.infofabric.dataquery.security;
 
-import java.io.IOException;
-import java.security.Principal;
-import java.util.Optional;
+import com.opentext.infofabric.dataquery.DataqueryConstants;
+import com.opentext.infofabric.dataquery.dto.DataqueryApiResponse;
+import io.dropwizard.auth.AuthFilter;
+import io.dropwizard.auth.AuthenticationException;
+import io.dropwizard.auth.Authenticator;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
@@ -18,15 +21,9 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-
-import com.opentext.infofabric.dataquery.dto.DataqueryApiResponse;
-import org.apache.commons.lang3.StringUtils;
-
-import com.opentext.infofabric.dataquery.DataqueryConstants;
-
-import io.dropwizard.auth.AuthFilter;
-import io.dropwizard.auth.AuthenticationException;
-import io.dropwizard.auth.Authenticator;
+import java.io.IOException;
+import java.security.Principal;
+import java.util.Optional;
 
 @Priority(Priorities.AUTHENTICATION)
 public class RestAuthFilter<P extends Principal> extends AuthFilter<RestCredentials, P> {

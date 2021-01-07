@@ -8,6 +8,11 @@
  */
 package com.opentext.infofabric.dataquery.health;
 
+import com.codahale.metrics.health.HealthCheck;
+import com.opentext.infofabric.dataquery.exception.DataqueryException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -15,12 +20,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.codahale.metrics.health.HealthCheck;
-import com.opentext.infofabric.dataquery.exception.DataqueryException;
 
 /**
  * Abstract Base class for Health Check.

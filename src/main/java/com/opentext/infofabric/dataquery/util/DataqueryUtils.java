@@ -8,12 +8,8 @@
  */
 package com.opentext.infofabric.dataquery.util;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.opentext.infofabric.dataquery.DataqueryConfiguration;
 import com.opentext.infofabric.dataquery.NamedQueryConfiguration;
 import com.opentext.infofabric.dataquery.dto.AccessPrivileges;
-import com.opentext.infofabric.dataquery.dto.DataqueryRequest;
 import com.opentext.infofabric.dataquery.dto.DmFilter;
 import com.opentext.infofabric.dataquery.dto.DmFilterset;
 import com.opentext.infofabric.dataquery.dto.DmPermission;
@@ -24,16 +20,11 @@ import com.opentext.infofabric.dataquery.graphql.query.FilterSet;
 import io.jsonwebtoken.lang.Collections;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.ParseException;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;

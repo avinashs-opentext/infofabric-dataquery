@@ -10,13 +10,11 @@ package com.opentext.infofabric.dataquery.mock;
 
 import com.opentext.infofabric.datamodel.DMLOperation;
 import com.opentext.infofabric.datamodel.ModelClient;
-import com.opentext.infofabric.datamodel.auth.SSOToken;
 import com.opentext.infofabric.datamodel.compiler.IViewCompiler;
 import com.opentext.infofabric.datamodel.compiler.ViewType;
 import com.opentext.infofabric.datamodel.exceptions.DataModelException;
 import com.opentext.infofabric.datamodel.exceptions.InvalidTokenException;
 import com.opentext.infofabric.datamodel.exceptions.ModelConflictException;
-import com.opentext.infofabric.datamodel.exceptions.UnauthorizedUserException;
 import com.opentext.infofabric.datamodel.models.Model;
 import com.opentext.infofabric.datamodel.models.Namespace;
 import com.opentext.infofabric.datamodel.models.attributes.Attribute;
@@ -24,7 +22,6 @@ import com.opentext.infofabric.datamodel.models.references.Reference;
 import com.opentext.infofabric.datamodel.models.relationships.Relationship;
 import com.opentext.infofabric.datamodel.models.types.Type;
 import com.opentext.infofabric.registrar.types.Payload;
-import com.opentext.infofabric.datamodel.ModelClient;
 import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.Arrays;

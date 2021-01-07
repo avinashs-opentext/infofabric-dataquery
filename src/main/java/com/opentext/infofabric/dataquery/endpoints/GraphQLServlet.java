@@ -10,7 +10,6 @@ package com.opentext.infofabric.dataquery.endpoints;
 
 import com.opentext.infofabric.appstate.client.AppStateClient;
 import com.opentext.infofabric.common.dropwizard.security.UserInfo;
-import com.opentext.infofabric.dataquery.DataqueryConfiguration;
 import com.opentext.infofabric.dataquery.DataqueryConstants;
 import com.opentext.infofabric.dataquery.dto.AccessPrivileges;
 import com.opentext.infofabric.dataquery.dto.DataqueryApiErrorResponse;

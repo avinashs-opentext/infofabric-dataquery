@@ -8,29 +8,19 @@
  */
 package com.opentext.infofabric.dataquery.graphql.traversal;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import com.opentext.infofabric.dataquery.graphql.query.Filter;
+import com.opentext.infofabric.dataquery.DataqueryConstants;
 import com.opentext.infofabric.dataquery.exception.DataqueryException;
 import com.opentext.infofabric.dataquery.graphql.RootDataAccess;
 import com.opentext.infofabric.dataquery.graphql.dataloaders.DataQuerySimpleLoader;
 import com.opentext.infofabric.dataquery.graphql.dataloaders.QueryLoaderFactory;
 import com.opentext.infofabric.dataquery.graphql.helpers.TypeMapper;
+import com.opentext.infofabric.dataquery.graphql.query.Filter;
 import com.opentext.infofabric.dataquery.graphql.query.FilterSet;
 import com.opentext.infofabric.dataquery.graphql.query.JoinCondition;
 import com.opentext.infofabric.dataquery.graphql.query.ProjectionSet;
 import com.opentext.infofabric.dataquery.graphql.query.Query;
-import com.opentext.infofabric.dataquery.graphql.results.ResultList;
-import io.jsonwebtoken.lang.Collections;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.opentext.infofabric.dataquery.DataqueryConstants;
 import com.opentext.infofabric.dataquery.graphql.query.QueryContext;
-
+import com.opentext.infofabric.dataquery.graphql.results.ResultList;
 import graphql.language.Argument;
 import graphql.language.Field;
 import graphql.language.Selection;
@@ -38,6 +28,14 @@ import graphql.language.SelectionSet;
 import graphql.schema.GraphQLFieldDefinition;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLType;
+import io.jsonwebtoken.lang.Collections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class SingleTraversal implements DataQueryTraversal {
 

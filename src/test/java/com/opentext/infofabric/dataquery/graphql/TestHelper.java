@@ -13,16 +13,14 @@ import com.opentext.infofabric.dataquery.DataqueryConfiguration;
 import com.opentext.infofabric.dataquery.guice.GuiceInjector;
 import com.opentext.infofabric.dataquery.regression.core.TestModule;
 import io.dropwizard.configuration.ConfigurationException;
-import io.dropwizard.jackson.Jackson;
-
 import io.dropwizard.configuration.YamlConfigurationFactory;
+import io.dropwizard.jackson.Jackson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.Assert;
 
 import java.io.File;
 import java.io.IOException;
-
-import org.testng.Assert;
 
 public class TestHelper {
 

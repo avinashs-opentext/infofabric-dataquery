@@ -8,37 +8,36 @@
  */
 package com.opentext.infofabric.dataquery.util;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-
 import com.google.inject.Inject;
-import com.opentext.infofabric.dataquery.dto.AccessPrivileges;
 import com.opentext.infofabric.appstate.client.AppStateClient;
 import com.opentext.infofabric.appstate.core.event.ErrorEvent;
 import com.opentext.infofabric.appstate.core.event.StateEvent;
 import com.opentext.infofabric.appstate.core.event.StateSubscription;
 import com.opentext.infofabric.common.crypto.IFabricCryptoService;
 import com.opentext.infofabric.dataquery.DataqueryConfiguration;
+import com.opentext.infofabric.dataquery.DataqueryConstants;
 import com.opentext.infofabric.dataquery.NamedQueryConfiguration;
+import com.opentext.infofabric.dataquery.dto.AccessPrivileges;
 import com.opentext.infofabric.dataquery.dto.DmModel;
 import com.opentext.infofabric.dataquery.dto.DmPermission;
 import com.opentext.infofabric.dataquery.dto.NamedQueryResponse;
 import com.opentext.infofabric.dataquery.dto.SqlResource;
+import com.opentext.infofabric.dataquery.exception.DataqueryException;
+import com.opentext.infofabric.dataquery.exception.NamedQueryRuntimeException;
+import com.opentext.infofabric.dataquery.graphql.GraphQLService;
 import com.opentext.infofabric.dataquery.guice.GuiceInjector;
+import com.opentext.infofabric.dataquery.services.ModelService;
+import com.opentext.infofabric.dataquery.services.NamedQueryExecutorService;
 import com.opentext.infofabric.registrar.stream.IFabricKafkaAdminClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.opentext.infofabric.dataquery.exception.DataqueryException;
-import com.opentext.infofabric.dataquery.DataqueryConstants;
-import com.opentext.infofabric.dataquery.exception.NamedQueryRuntimeException;
-import com.opentext.infofabric.dataquery.graphql.GraphQLService;
-import com.opentext.infofabric.dataquery.services.ModelService;
-import com.opentext.infofabric.dataquery.services.NamedQueryExecutorService;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 public class AppStateService {
     private static final Logger log = LoggerFactory.getLogger(AppStateService.class);

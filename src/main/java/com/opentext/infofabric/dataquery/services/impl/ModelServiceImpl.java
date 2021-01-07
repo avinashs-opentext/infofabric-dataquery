@@ -10,18 +10,17 @@ package com.opentext.infofabric.dataquery.services.impl;
 
 import com.google.inject.Inject;
 import com.opentext.infofabric.common.util.JwtUtil;
+import com.opentext.infofabric.datamodel.ModelClient;
 import com.opentext.infofabric.datamodel.exceptions.DataModelException;
 import com.opentext.infofabric.datamodel.models.Model;
 import com.opentext.infofabric.datamodel.models.relationships.Relationship;
 import com.opentext.infofabric.datamodel.models.types.Type;
+import com.opentext.infofabric.dataquery.DataqueryConstants;
+import com.opentext.infofabric.dataquery.exception.DataqueryRuntimeException;
 import com.opentext.infofabric.dataquery.services.ModelService;
 import com.opentext.infofabric.dataquery.services.impl.sdl.SDLCommonType;
 import com.opentext.infofabric.dataquery.services.impl.sdl.SDLRelationship;
 import com.opentext.infofabric.dataquery.services.impl.sdl.SDLRuntimeType;
-import com.opentext.infofabric.dataquery.exception.DataqueryRuntimeException;
-
-import com.opentext.infofabric.datamodel.ModelClient;
-import com.opentext.infofabric.dataquery.DataqueryConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

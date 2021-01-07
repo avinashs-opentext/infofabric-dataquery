@@ -8,25 +8,22 @@
  */
 package com.opentext.infofabric.dataquery.graphql.dataloaders.hbase;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionStage;
-
-import com.opentext.infofabric.dataquery.graphql.results.ResultObject;
-import com.opentext.infofabric.dataquery.graphql.dataloaders.DataQueryBatchLoader;
-import io.prometheus.client.Histogram;
-import org.apache.commons.collections.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.opentext.infofabric.dataquery.exception.DataqueryRuntimeException;
 import com.opentext.infofabric.dataquery.graphql.dataloaders.DataQueryBatchLoader;
 import com.opentext.infofabric.dataquery.graphql.query.Query;
 import com.opentext.infofabric.dataquery.graphql.results.ResultList;
+import com.opentext.infofabric.dataquery.graphql.results.ResultObject;
+import io.prometheus.client.Histogram;
+import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 
 import static com.opentext.infofabric.dataquery.DataqueryConstants.PROMETHEUS_METRICS_ROOT;
 

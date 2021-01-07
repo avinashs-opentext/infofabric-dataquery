@@ -13,18 +13,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.inject.Inject;
 import com.opentext.infofabric.dataquery.DataqueryConfiguration;
-import com.opentext.infofabric.dataquery.DataqueryConstants;
 import com.opentext.infofabric.dataquery.cache.ResponseCache;
 import com.opentext.infofabric.dataquery.dto.DataqueryRequest;
 import com.opentext.infofabric.dataquery.guice.GuiceInjector;
-import com.opentext.infofabric.dataquery.security.DataqueryRequestWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.Map;
 
 public class DataQueryServlet {

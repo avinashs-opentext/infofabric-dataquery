@@ -13,10 +13,10 @@ import graphql.schema.DataFetcher;
 
 import static com.opentext.infofabric.dataquery.DataqueryConstants.AGGREGATE_METHOD_SUFFIX;
 import static com.opentext.infofabric.dataquery.DataqueryConstants.BY_ID_METHOD_SUFFIX;
+import static com.opentext.infofabric.dataquery.DataqueryConstants.INSERT_METHOD_SUFFIX;
 import static com.opentext.infofabric.dataquery.DataqueryConstants.QUERY_METHOD_SUFFIX;
 import static com.opentext.infofabric.dataquery.DataqueryConstants.SCROLL_METHOD_SUFFIX;
 import static com.opentext.infofabric.dataquery.DataqueryConstants.UPSERT_METHOD_SUFFIX;
-import static com.opentext.infofabric.dataquery.DataqueryConstants.INSERT_METHOD_SUFFIX;
 
 public interface RootDataAccess extends DataFetcher {
 

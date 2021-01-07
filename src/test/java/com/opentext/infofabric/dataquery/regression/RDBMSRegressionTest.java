@@ -15,6 +15,7 @@ import com.liaison.datamodel.models.relationships.Member;
 import com.liaison.datamodel.models.relationships.Relationship;
 import com.liaison.datamodel.models.types.SimpleType;
 import com.liaison.datamodel.models.types.Type;
+import com.opentable.db.postgres.embedded.EmbeddedPostgres;
 import com.opentext.infofabric.dataquery.cache.ResponseCache;
 import com.opentext.infofabric.dataquery.endpoints.DataQueryServlet;
 import com.opentext.infofabric.dataquery.graphql.RootDataAccess;
@@ -22,7 +23,6 @@ import com.opentext.infofabric.dataquery.graphql.dataloaders.rdbms.SQLBatchParse
 import com.opentext.infofabric.dataquery.regression.core.RegressionBase;
 import com.opentext.infofabric.dataquery.regression.mock.MockModelServiceImpl;
 import com.opentext.infofabric.dataquery.services.impl.SDLRelationshipsUtil;
-import com.opentable.db.postgres.embedded.EmbeddedPostgres;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;

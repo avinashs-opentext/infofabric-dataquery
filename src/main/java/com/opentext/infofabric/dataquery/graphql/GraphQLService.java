@@ -23,10 +23,11 @@ import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.opentext.infofabric.dataquery.DataqueryConstants.MUTATION_ROOT_TYPE;
 import static com.opentext.infofabric.dataquery.DataqueryConstants.QUERY_ROOT_TYPE;
@@ -35,11 +36,6 @@ import static com.opentext.infofabric.dataquery.DataqueryConstants.SCALAR_BASE64
 import static com.opentext.infofabric.dataquery.DataqueryConstants.SCALAR_DATE;
 import static com.opentext.infofabric.dataquery.DataqueryConstants.SCALAR_TIME;
 import static com.opentext.infofabric.dataquery.DataqueryConstants.SCALAR_TIMESTAMP;
-import static com.opentext.infofabric.dataquery.graphql.CustomScalars.GraphQLAny;
-import static com.opentext.infofabric.dataquery.graphql.CustomScalars.GraphQLBase64Binary;
-import static com.opentext.infofabric.dataquery.graphql.CustomScalars.GraphQLDate;
-import static com.opentext.infofabric.dataquery.graphql.CustomScalars.GraphQLTime;
-import static com.opentext.infofabric.dataquery.graphql.CustomScalars.GraphQLTimestamp;
 import static graphql.schema.idl.RuntimeWiring.newRuntimeWiring;
 
 public class GraphQLService {

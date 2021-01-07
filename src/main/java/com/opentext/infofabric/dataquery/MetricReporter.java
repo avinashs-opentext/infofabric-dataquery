@@ -8,13 +8,12 @@
  */
 package com.opentext.infofabric.dataquery;
 
-import java.io.File;
-import java.util.concurrent.TimeUnit;
-
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.CsvReporter;
-
 import io.dropwizard.setup.Environment;
+
+import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Class to initialize the Dropwizard metric reporter, I think for now it can be

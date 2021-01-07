@@ -10,10 +10,10 @@ package com.opentext.infofabric.dataquery.services.impl;
 
 import com.opentext.infofabric.dataquery.exception.DataqueryRuntimeException;
 import com.opentext.infofabric.dataquery.graphql.GraphQLService;
-import com.opentext.infofabric.dataquery.services.NamedQueryService;
 import com.opentext.infofabric.dataquery.namedqueries.NamedQuery;
 import com.opentext.infofabric.dataquery.namedqueries.rdbms.RecordLockGet;
 import com.opentext.infofabric.dataquery.namedqueries.rdbms.RecordLockRelease;
+import com.opentext.infofabric.dataquery.services.NamedQueryService;
 import graphql.ExecutionResult;
 
 import java.util.HashMap;

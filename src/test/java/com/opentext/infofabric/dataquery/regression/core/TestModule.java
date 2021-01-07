@@ -8,9 +8,8 @@
  */
 package com.opentext.infofabric.dataquery.regression.core;
 
-import com.liaison.appstate.client.AppStateClient;
-import com.liaison.appstate.client.AppStateClientBuilder;
 import com.opentext.infofabric.dataquery.DataqueryConfiguration;
+import com.opentext.infofabric.dataquery.cache.ResponseCacheFilter;
 import com.opentext.infofabric.dataquery.endpoints.DataQueryServlet;
 import com.opentext.infofabric.dataquery.graphql.RootDataMutator;
 import com.opentext.infofabric.dataquery.graphql.dataloaders.hbase.HBaseConnection;
@@ -26,7 +25,6 @@ import com.opentext.infofabric.dataquery.services.NamedQueryConnectionProvider;
 import com.opentext.infofabric.dataquery.services.NamedQueryService;
 import com.opentext.infofabric.dataquery.services.impl.NamedQueryConnectionProviderImpl;
 import com.opentext.infofabric.dataquery.services.impl.NamedQueryServiceImpl;
-import com.opentext.infofabric.dataquery.cache.ResponseCacheFilter;
 import io.dropwizard.setup.Environment;
 
 public class TestModule extends DataqueryModule {

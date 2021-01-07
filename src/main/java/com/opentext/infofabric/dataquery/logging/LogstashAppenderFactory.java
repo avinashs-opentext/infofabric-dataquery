@@ -8,19 +8,12 @@
  */
 package com.opentext.infofabric.dataquery.logging;
 
-import java.util.Map;
-
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.core.Appender;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.core.Appender;
 import com.opentext.infofabric.dataquery.exception.DataqueryRuntimeException;
 import io.dropwizard.logging.AbstractAppenderFactory;
 import io.dropwizard.logging.async.AsyncAppenderFactory;
@@ -30,6 +23,11 @@ import io.dropwizard.logging.layout.LayoutFactory;
 import net.logstash.logback.appender.LogstashTcpSocketAppender;
 import net.logstash.logback.encoder.LogstashEncoder;
 import net.logstash.logback.fieldnames.LogstashFieldNames;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import java.util.Map;
 
 /**
  * Appender factory to create LogstashTcpSocketAppender.

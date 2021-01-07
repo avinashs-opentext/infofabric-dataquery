@@ -10,10 +10,10 @@ package com.opentext.infofabric.dataquery;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.inject.Inject;
+import com.opentext.infofabric.common.crypto.IFabricCryptoService;
 import com.opentext.infofabric.dataquery.dto.MetricReporterConfiguration;
 import com.opentext.infofabric.dataquery.exception.DataqueryRuntimeException;
 import com.opentext.infofabric.dataquery.graphql.RootDataAccess;
-import com.opentext.infofabric.common.crypto.IFabricCryptoService;
 import com.opentext.infofabric.registrar.types.DataCenterEnvironment;
 import io.dropwizard.Configuration;
 import io.dropwizard.client.HttpClientConfiguration;

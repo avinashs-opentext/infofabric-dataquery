@@ -8,10 +8,10 @@
  */
 package com.opentext.infofabric.dataquery.graphql.query;
 
-import com.opentext.infofabric.dataquery.graphql.RootDataAccess;
-import com.opentext.infofabric.dataquery.graphql.RootDataFetcher;
 import com.opentext.infofabric.dataquery.dto.AccessPrivileges;
 import com.opentext.infofabric.dataquery.graphql.GraphQLService;
+import com.opentext.infofabric.dataquery.graphql.RootDataAccess;
+import com.opentext.infofabric.dataquery.graphql.RootDataFetcher;
 
 import java.util.Map;
 
